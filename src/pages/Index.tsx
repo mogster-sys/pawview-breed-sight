@@ -1,11 +1,61 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { Navbar } from "@/components/Navbar";
+import { Link } from "react-router-dom";
+import { Dog, Camera, BookText } from "lucide-react";
+
+const HomeAction = ({
+  icon,
+  label,
+  desc,
+  href,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  desc: string;
+  href: string;
+}) => (
+  <Link
+    to={href}
+    className="flex flex-col justify-between items-center border rounded-xl bg-white shadow-md hover:shadow-xl transition p-8 min-w-[260px] h-64 group"
+  >
+    <div className="mb-4">{icon}</div>
+    <div>
+      <div className="font-semibold text-xl text-blue-900 group-hover:text-yellow-500">{label}</div>
+      <div className="text-gray-500 mt-2">{desc}</div>
+    </div>
+  </Link>
+);
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-yellow-50 to-yellow-100">
+      <Navbar />
+      <div className="max-w-5xl mx-auto py-8 px-2">
+        <header className="my-10 text-center">
+          <h1 className="text-5xl font-extrabold text-blue-800 mb-4 drop-shadow">
+            🦴 PawVision
+          </h1>
+          <h2 className="text-xl font-medium text-blue-700 mb-8">
+            Experience the world as your dog does—through their eyes!
+          </h2>
+          <div className="text-lg text-gray-800 max-w-2xl mx-auto mb-7">
+            Select your dog's breed, activate the live camera filter, and share photos showing how canine vision differs—including split comparisons and breed-based field of view. Educational, fun, and science-backed!
+          </div>
+        </header>
+        <div className="flex flex-wrap gap-8 justify-center items-stretch mt-10 mb-24">
+          <HomeAction
+            icon={<Camera className="text-yellow-400" size={54} />}
+            label="Live Dog Vision Camera"
+            desc="See through your dog's eyes in real time—split view, breed-based field. Capture and save filtered 'dog view' photos!"
+            href="/camera"
+          />
+          <HomeAction
+            icon={<BookText className="text-blue-500" size={50} />}
+            label="Learn & Compare"
+            desc="Dive into breed vision facts, simulator types, and interactive education."
+            href="/learn"
+          />
+        </div>
       </div>
     </div>
   );
