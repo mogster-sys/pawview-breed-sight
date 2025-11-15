@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
-import { SavedPhoto, getGalleryPhotos, deletePhoto, clearGallery } from "@/utils/photoGallery";
+import { SavedPhoto, getGalleryPhotos, deletePhoto, clearGallery, getStorageInfo } from "@/utils/photoGallery";
+import { StorageWarning } from "@/components/StorageWarning";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Download, Trash } from "lucide-react";
+import { Trash2, Download, Trash, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -18,30 +19,68 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+const PAGE_SIZE = 20;
+
 export default function Gallery() {
   const [photos, setPhotos] = useState<SavedPhoto[]>([]);
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [storageInfo, setStorageInfo] = useState({
+    count: 0,
+    isNative: false,
+    shouldMoveToDevice: false,
+    nearLimit: false,
+  });
 
   useEffect(() => {
-    loadPhotos();
+    loadPhotos(0);
+    loadStorageInfo();
   }, []);
 
-  const loadPhotos = () => {
-    setPhotos(getGalleryPhotos());
+  const loadStorageInfo = async () => {
+    const info = await getStorageInfo();
+    setStorageInfo(info);
   };
 
-  const handleDelete = (id: string) => {
-    deletePhoto(id);
+  const loadPhotos = async (page: number) => {
+    const loaded = await getGalleryPhotos(page, PAGE_SIZE);
+    setPhotos(loaded);
+    setCurrentPage(page);
+    
+    // Check if there are more photos
+    const nextPage = await getGalleryPhotos(page + 1, 1);
+    setHasMore(nextPage.length > 0);
+  };
+
+  const handleDelete = async (id: string) => {
+    await deletePhoto(id);
     setPhotos(prev => prev.filter(p => p.id !== id));
     setSelectedPhotos(prev => prev.filter(pid => pid !== id));
+    await loadStorageInfo();
     toast.success("Photo deleted");
   };
 
-  const handleClearAll = () => {
-    clearGallery();
+  const handleClearAll = async () => {
+    await clearGallery();
     setPhotos([]);
     setSelectedPhotos([]);
+    await loadStorageInfo();
     toast.success("Gallery cleared");
+  };
+
+  const handleNextPage = () => {
+    if (hasMore) {
+      loadPhotos(currentPage + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      loadPhotos(currentPage - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const toggleSelection = (id: string) => {
@@ -75,13 +114,19 @@ export default function Gallery() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50/70 to-yellow-50">
       <Navbar />
       <div className="max-w-7xl mx-auto mt-10 px-4 pb-10">
+        {/* Storage Warning */}
+        <div className="mb-6">
+          <StorageWarning {...storageInfo} />
+        </div>
+
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="font-bold text-3xl text-blue-800 mb-2">
               Photo Gallery
             </h1>
             <p className="text-gray-600">
-              {photos.length} saved {photos.length === 1 ? 'photo' : 'photos'} • 
+              {storageInfo.count} total {storageInfo.count === 1 ? 'photo' : 'photos'} • 
+              Page {currentPage + 1} • 
               Select up to 4 to compare
             </p>
           </div>
@@ -233,6 +278,31 @@ export default function Gallery() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {photos.length > 0 && (
+          <div className="flex justify-center items-center gap-4 mt-8">
+            <Button
+              variant="outline"
+              onClick={handlePrevPage}
+              disabled={currentPage === 0}
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Previous
+            </Button>
+            <span className="text-sm text-gray-600">
+              Page {currentPage + 1}
+            </span>
+            <Button
+              variant="outline"
+              onClick={handleNextPage}
+              disabled={!hasMore}
+            >
+              Next
+              <ChevronRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         )}
       </div>

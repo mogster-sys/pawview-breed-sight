@@ -83,7 +83,7 @@ export default function CameraSimulator() {
   const [showZoneOverlay, setShowZoneOverlay] = useState(true);
 
   useEffect(() => {
-    setGalleryCount(getPhotoCount());
+    getPhotoCount().then(setGalleryCount);
   }, []);
 
   // Auto-update retinal mode based on breed skull type
@@ -173,16 +173,17 @@ export default function CameraSimulator() {
             <div className="flex gap-2 mt-4">
               <Button
                 className="flex-1"
-                onClick={() => {
+                onClick={async () => {
                   if (canvasDogRef.current) {
                     const imageData = getCanvasDataURL(canvasDogRef.current);
-                    savePhoto({
+                    await savePhoto({
                       imageData,
                       breed,
                       retinalMode,
                       filters,
                     });
-                    setGalleryCount(getPhotoCount());
+                    const count = await getPhotoCount();
+                    setGalleryCount(count);
                     toast.success("Photo saved to gallery!");
                   }
                 }}
