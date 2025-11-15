@@ -33,7 +33,7 @@ const Index = () => {
       <div className="max-w-5xl mx-auto py-8 px-2">
         <header className="my-10 text-center">
           <h1 className="text-5xl font-extrabold text-blue-800 mb-4 drop-shadow">
-            🦴 PawVision
+            🦴 My Doggles
           </h1>
           <h2 className="text-xl font-medium text-blue-700 mb-8">
             Experience the world as your dog does—through their eyes!
