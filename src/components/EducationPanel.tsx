@@ -24,6 +24,7 @@ export function EducationPanel() {
                 <p><span className="font-medium">Vision:</span> Enhanced central acuity for focused vision</p>
                 <p><span className="font-medium">Best for:</span> Direct eye contact, reading facial expressions, face-to-face commands</p>
                 <p><span className="font-medium">Screen viewing:</span> Better able to process localized visual information on screens</p>
+                <p><span className="font-medium">TV watching:</span> Much more likely to be able to watch and engage with television content</p>
               </div>
             </div>
             <div className="border-l-4 border-yellow-500 pl-4 py-2">
