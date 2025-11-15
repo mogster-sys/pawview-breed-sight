@@ -3,7 +3,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: "app.lovable.20f51e23fe334383898ac33646dd16fb",
-  appName: "pawview-breed-sight",
+  appName: "My Doggles",
   webDir: "dist",
   bundledWebRuntime: false,
   server: {

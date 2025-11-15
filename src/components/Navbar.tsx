@@ -16,7 +16,7 @@ export const Navbar = () => {
       <div className="flex max-w-screen-xl mx-auto px-6 py-4 items-center gap-8">
         <div className="flex items-center gap-2 text-blue-700 font-black text-2xl select-none">
           <Dog size={30} className="text-yellow-400" />
-          PawVision
+          My Doggles
         </div>
         <div className="flex flex-1 gap-4 items-center">
           {links.map(link => (
