@@ -189,15 +189,17 @@ export default function CameraSimulator() {
               </TabsList>
             </Tabs>
             
-            <Button
-              variant={showZoneOverlay ? "default" : "outline"}
-              size="sm"
-              onClick={() => setShowZoneOverlay(!showZoneOverlay)}
-              className="flex items-center gap-2"
-            >
-              <Target className="w-4 h-4" />
-              {showZoneOverlay ? "Hide" : "Show"} Zone
-            </Button>
+            {viewMode !== "human" && (
+              <Button
+                variant={showZoneOverlay ? "default" : "outline"}
+                size="sm"
+                onClick={() => setShowZoneOverlay(!showZoneOverlay)}
+                className="flex items-center gap-2"
+              >
+                <Target className="w-4 h-4" />
+                {showZoneOverlay ? "Hide" : "Show"} Zone
+              </Button>
+            )}
           </div>
 
             <div style={{ width: VIDEO_W, height: VIDEO_H, position: "relative" }}>
