@@ -42,22 +42,62 @@ export function EducationPanel() {
           </div>
         </TabsContent>
         <TabsContent value="fields">
-          <div className="space-y-2">
-            <div>
-              <span className="font-medium text-gray-700">Greyhound: </span>
-              <span>Extremely wide field (~270°), more peripheral awareness.</span>
+          <div className="space-y-3">
+            <div className="font-semibold text-sm text-blue-700 mb-2">Dolichocephalic (Long snouts - Visual Streak)</div>
+            <div className="ml-3 space-y-2">
+              <div>
+                <span className="font-medium text-gray-700">Greyhound, Borzoi, Saluki: </span>
+                <span>Extremely wide field (~270°), exceptional peripheral awareness for tracking prey across landscapes.</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Afghan Hound, Collie: </span>
+                <span>Very wide field (~260-265°), superior motion detection and landscape scanning.</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Doberman, Dachshund: </span>
+                <span>Wide field (~250-260°), optimized for hunting and guarding roles.</span>
+              </div>
             </div>
-            <div>
-              <span className="font-medium text-gray-700">Labrador: </span>
-              <span>Typical dog field (~240°), balanced central/peripheral view.</span>
+            
+            <div className="font-semibold text-sm text-yellow-700 mb-2 mt-4">Mesocephalic (Medium snouts - Balanced)</div>
+            <div className="ml-3 space-y-2">
+              <div>
+                <span className="font-medium text-gray-700">Labrador, Golden Retriever, German Shepherd: </span>
+                <span>Balanced field (~240°), versatile vision for work and companionship.</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Siberian Husky, Australian Shepherd: </span>
+                <span>Wide balanced field (~240-245°), great for herding and landscape scanning.</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Beagle, Poodle, Rottweiler: </span>
+                <span>Moderate field (~235°), balanced peripheral and central vision.</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Corgi, Miniature Schnauzer, Yorkshire Terrier: </span>
+                <span>Moderate field (~225-230°), alert companion vision.</span>
+              </div>
             </div>
-            <div>
-              <span className="font-medium text-gray-700">Bulldog: </span>
-              <span>Flatter face, more overlap but less side vision (~180°-200°).</span>
+            
+            <div className="font-semibold text-sm text-red-700 mb-2 mt-4">Brachycephalic (Flat faces - Area Centralis)</div>
+            <div className="ml-3 space-y-2">
+              <div>
+                <span className="font-medium text-gray-700">Boxer: </span>
+                <span>Moderate-narrow field (~210°), better central focus than peripheral.</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Bulldog, French Bulldog, Cavalier, Pug: </span>
+                <span>Limited field (~190-200°), enhanced central focus for face-to-face interaction and excellent TV-watching ability.</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Shih Tzu: </span>
+                <span>Reduced field (~190°), optimized for close companionship and direct eye contact.</span>
+              </div>
             </div>
-            <div>
-              <span className="font-medium text-gray-700">Custom/Mixed: </span>
-              <span>Use the app sliders to tune to your dog's expected vision!</span>
+            
+            <div className="bg-blue-50 p-3 rounded mt-4">
+              <span className="font-medium text-gray-700">Custom/Mixed Breed: </span>
+              <span>Use the camera simulator to adjust settings for your dog's unique vision!</span>
             </div>
           </div>
         </TabsContent>
