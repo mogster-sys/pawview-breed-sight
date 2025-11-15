@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CameraSimulator from "./pages/CameraSimulator";
 import LearnPage from "./pages/Learn";
+import Gallery from "./pages/Gallery";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/camera" element={<CameraSimulator />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/learn" element={<LearnPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
