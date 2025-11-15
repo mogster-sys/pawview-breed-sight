@@ -34,6 +34,10 @@ const CAMERA_ERROR_HINT = (
 const BREED_FIELD_DESC: Record<BreedType, string> = {
   // Dolichocephalic (VS)
   greyhound: "Extremely wide field of view (270°); exceptional peripheral awareness for tracking prey.",
+  borzoi: "Extremely wide field (~270°); Russian sighthound bred for scanning vast landscapes.",
+  saluki: "Extremely wide field (~270°); ancient Persian sighthound optimized for desert hunting.",
+  "afghan-hound": "Very wide field (~265°); elegant sighthound with superior peripheral vision.",
+  collie: "Wide field (~260°); herding breed with excellent motion detection across landscapes.",
   doberman: "Wide field of view (~260°); excellent for guarding and detecting motion.",
   "german-pointer": "Broad field (~250°); optimized for scanning landscapes while hunting.",
   dachshund: "Wide field (~250°) despite short stature; built for tracking in burrows.",
@@ -53,6 +57,7 @@ const BREED_FIELD_DESC: Record<BreedType, string> = {
   "yorkshire-terrier": "Moderate-balanced field (~225°); alert companion with decent peripheral vision.",
   
   // Brachycephalic (AC)
+  pug: "Reduced field (~195°); compact companion breed with strong central focus and excellent TV-watching ability.",
   bulldog: "Narrower field (200°); enhanced central focus with reduced periphery.",
   "french-bulldog": "Limited field (~200°); stronger central acuity for face-to-face interaction.",
   boxer: "Moderate-narrow field (~210°); better central focus than peripheral.",

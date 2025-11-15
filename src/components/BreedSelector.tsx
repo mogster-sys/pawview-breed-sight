@@ -18,33 +18,38 @@ import { cn } from "@/lib/utils";
 
 const BREEDS = [
   // Dolichocephalic breeds (VS - Visual Streak) - Long snouts
-  { value: "greyhound", label: "Greyhound (270°)" },
-  { value: "doberman", label: "Doberman Pinscher (~260°)" },
-  { value: "german-pointer", label: "German Shorthaired Pointer (~250°)" },
-  { value: "dachshund", label: "Dachshund (~250°)" },
+  { value: "greyhound", label: "Greyhound (270°)", keywords: ["greyhound"] },
+  { value: "borzoi", label: "Borzoi (~270°)", keywords: ["borzoi", "russian wolfhound"] },
+  { value: "saluki", label: "Saluki (~270°)", keywords: ["saluki", "persian greyhound"] },
+  { value: "afghan-hound", label: "Afghan Hound (~265°)", keywords: ["afghan", "hound"] },
+  { value: "collie", label: "Collie (~260°)", keywords: ["collie", "rough collie", "border collie"] },
+  { value: "doberman", label: "Doberman Pinscher (~260°)", keywords: ["doberman", "dobermann"] },
+  { value: "german-pointer", label: "German Shorthaired Pointer (~250°)", keywords: ["pointer", "german pointer"] },
+  { value: "dachshund", label: "Dachshund (~250°)", keywords: ["dachshund", "wiener dog", "sausage dog"] },
   
   // Mesocephalic breeds (Balanced) - Medium snouts
-  { value: "labrador", label: "Labrador Retriever (240°)" },
-  { value: "golden-retriever", label: "Golden Retriever (240°)" },
-  { value: "german-shepherd", label: "German Shepherd (~240°)" },
-  { value: "siberian-husky", label: "Siberian Husky (~245°)" },
-  { value: "australian-shepherd", label: "Australian Shepherd (~240°)" },
-  { value: "beagle", label: "Beagle (~235°)" },
-  { value: "poodle", label: "Poodle (~235°)" },
-  { value: "rottweiler", label: "Rottweiler (~235°)" },
-  { value: "corgi", label: "Pembroke Welsh Corgi (~230°)" },
-  { value: "great-dane", label: "Great Dane (~240°)" },
-  { value: "miniature-schnauzer", label: "Miniature Schnauzer (~230°)" },
-  { value: "yorkshire-terrier", label: "Yorkshire Terrier (~225°)" }, // Moved to mesocephalic
+  { value: "labrador", label: "Labrador Retriever (240°)", keywords: ["labrador", "lab"] },
+  { value: "golden-retriever", label: "Golden Retriever (240°)", keywords: ["golden", "retriever"] },
+  { value: "german-shepherd", label: "German Shepherd (~240°)", keywords: ["german shepherd", "alsatian"] },
+  { value: "siberian-husky", label: "Siberian Husky (~245°)", keywords: ["husky", "siberian"] },
+  { value: "australian-shepherd", label: "Australian Shepherd (~240°)", keywords: ["australian shepherd", "aussie"] },
+  { value: "beagle", label: "Beagle (~235°)", keywords: ["beagle"] },
+  { value: "poodle", label: "Poodle (~235°)", keywords: ["poodle", "standard poodle", "miniature poodle"] },
+  { value: "rottweiler", label: "Rottweiler (~235°)", keywords: ["rottweiler", "rottie"] },
+  { value: "corgi", label: "Pembroke Welsh Corgi (~230°)", keywords: ["corgi", "corgie", "pembroke", "welsh corgi"] },
+  { value: "great-dane", label: "Great Dane (~240°)", keywords: ["great dane", "dane"] },
+  { value: "miniature-schnauzer", label: "Miniature Schnauzer (~230°)", keywords: ["schnauzer", "miniature schnauzer"] },
+  { value: "yorkshire-terrier", label: "Yorkshire Terrier (~225°)", keywords: ["yorkshire", "yorkie", "terrier"] },
   
   // Brachycephalic breeds (AC - Area Centralis) - Flat faces
-  { value: "bulldog", label: "Bulldog (200°)" },
-  { value: "french-bulldog", label: "French Bulldog (~200°)" },
-  { value: "boxer", label: "Boxer (~210°)" },
-  { value: "shih-tzu", label: "Shih Tzu (~190°)" },
-  { value: "cavalier", label: "Cavalier King Charles Spaniel (~200°)" },
+  { value: "pug", label: "Pug (~195°)", keywords: ["pug"] },
+  { value: "bulldog", label: "Bulldog (200°)", keywords: ["bulldog", "english bulldog"] },
+  { value: "french-bulldog", label: "French Bulldog (~200°)", keywords: ["french bulldog", "frenchie"] },
+  { value: "boxer", label: "Boxer (~210°)", keywords: ["boxer"] },
+  { value: "shih-tzu", label: "Shih Tzu (~190°)", keywords: ["shih tzu", "shitzu"] },
+  { value: "cavalier", label: "Cavalier King Charles Spaniel (~200°)", keywords: ["cavalier", "king charles", "spaniel"] },
   
-  { value: "custom", label: "Custom/Mixed Breed" },
+  { value: "custom", label: "Custom/Mixed Breed", keywords: ["custom", "mixed", "mutt"] },
 ];
 
 export type BreedType = typeof BREEDS[number]["value"];
@@ -85,7 +90,7 @@ export function BreedSelector({
                   <CommandItem
                     key={breed.value}
                     value={breed.value}
-                    keywords={[breed.label]}
+                    keywords={breed.keywords}
                     onSelect={(currentValue) => {
                       onChange(currentValue as BreedType);
                       setOpen(false);
