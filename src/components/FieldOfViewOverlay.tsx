@@ -22,13 +22,13 @@ function getFieldOfViewAngle(breed: BreedType) {
   if (breed === "corgi") return 230;
   if (breed === "great-dane") return 240;
   if (breed === "miniature-schnauzer") return 230;
+  if (breed === "yorkshire-terrier") return 225; // Moved to mesocephalic
   
   // Brachycephalic breeds (AC - Area Centralis, narrower field)
   if (breed === "bulldog") return 200;
   if (breed === "french-bulldog") return 200;
   if (breed === "boxer") return 210;
   if (breed === "shih-tzu") return 190;
-  if (breed === "yorkshire-terrier") return 195;
   if (breed === "cavalier") return 200;
   
   return 220; // Custom

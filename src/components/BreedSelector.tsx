@@ -17,13 +17,13 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const BREEDS = [
-  // Dolichocephalic breeds (VS - Visual Streak)
+  // Dolichocephalic breeds (VS - Visual Streak) - Long snouts
   { value: "greyhound", label: "Greyhound (270°)" },
   { value: "doberman", label: "Doberman Pinscher (~260°)" },
   { value: "german-pointer", label: "German Shorthaired Pointer (~250°)" },
   { value: "dachshund", label: "Dachshund (~250°)" },
   
-  // Mesocephalic breeds (Balanced)
+  // Mesocephalic breeds (Balanced) - Medium snouts
   { value: "labrador", label: "Labrador Retriever (240°)" },
   { value: "golden-retriever", label: "Golden Retriever (240°)" },
   { value: "german-shepherd", label: "German Shepherd (~240°)" },
@@ -35,13 +35,13 @@ const BREEDS = [
   { value: "corgi", label: "Pembroke Welsh Corgi (~230°)" },
   { value: "great-dane", label: "Great Dane (~240°)" },
   { value: "miniature-schnauzer", label: "Miniature Schnauzer (~230°)" },
+  { value: "yorkshire-terrier", label: "Yorkshire Terrier (~225°)" }, // Moved to mesocephalic
   
-  // Brachycephalic breeds (AC - Area Centralis)
+  // Brachycephalic breeds (AC - Area Centralis) - Flat faces
   { value: "bulldog", label: "Bulldog (200°)" },
   { value: "french-bulldog", label: "French Bulldog (~200°)" },
   { value: "boxer", label: "Boxer (~210°)" },
   { value: "shih-tzu", label: "Shih Tzu (~190°)" },
-  { value: "yorkshire-terrier", label: "Yorkshire Terrier (~195°)" },
   { value: "cavalier", label: "Cavalier King Charles Spaniel (~200°)" },
   
   { value: "custom", label: "Custom/Mixed Breed" },
