@@ -4,9 +4,33 @@ import React from "react";
 import type { BreedType } from "./BreedSelector";
 
 function getFieldOfViewAngle(breed: BreedType) {
+  // Dolichocephalic breeds (VS - Visual Streak, wider field)
   if (breed === "greyhound") return 270;
+  if (breed === "doberman") return 260;
+  if (breed === "german-pointer") return 250;
+  if (breed === "dachshund") return 250;
+  
+  // Mesocephalic breeds (Balanced)
   if (breed === "labrador") return 240;
-  if (breed === "bulldog") return 180;
+  if (breed === "golden-retriever") return 240;
+  if (breed === "german-shepherd") return 240;
+  if (breed === "siberian-husky") return 245;
+  if (breed === "australian-shepherd") return 240;
+  if (breed === "beagle") return 235;
+  if (breed === "poodle") return 235;
+  if (breed === "rottweiler") return 235;
+  if (breed === "corgi") return 230;
+  if (breed === "great-dane") return 240;
+  if (breed === "miniature-schnauzer") return 230;
+  
+  // Brachycephalic breeds (AC - Area Centralis, narrower field)
+  if (breed === "bulldog") return 200;
+  if (breed === "french-bulldog") return 200;
+  if (breed === "boxer") return 210;
+  if (breed === "shih-tzu") return 190;
+  if (breed === "yorkshire-terrier") return 195;
+  if (breed === "cavalier") return 200;
+  
   return 220; // Custom
 }
 

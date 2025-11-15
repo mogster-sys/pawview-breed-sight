@@ -32,9 +32,33 @@ const CAMERA_ERROR_HINT = (
 );
 
 const BREED_FIELD_DESC: Record<BreedType, string> = {
-  greyhound: "Extremely wide field of view; strong peripheral awareness.",
-  labrador: "Broad visual field balanced for utility & play.",
-  bulldog: "Reduced peripheral vision; more central focus.",
+  // Dolichocephalic (VS)
+  greyhound: "Extremely wide field of view (270°); exceptional peripheral awareness for tracking prey.",
+  doberman: "Wide field of view (~260°); excellent for guarding and detecting motion.",
+  "german-pointer": "Broad field (~250°); optimized for scanning landscapes while hunting.",
+  dachshund: "Wide field (~250°) despite short stature; built for tracking in burrows.",
+  
+  // Mesocephalic (Balanced)
+  labrador: "Balanced visual field (240°); versatile for work and companionship.",
+  "golden-retriever": "Broad balanced field (240°); excellent all-around vision for retrieving.",
+  "german-shepherd": "Well-balanced field (~240°); optimal for working and protection roles.",
+  "siberian-husky": "Wide balanced field (~245°); adapted for scanning snowy landscapes.",
+  "australian-shepherd": "Balanced field (~240°); great for herding and tracking movement.",
+  beagle: "Moderate field (~235°); tuned for scent tracking with good peripheral vision.",
+  poodle: "Balanced field (~235°); versatile vision for water work and companionship.",
+  rottweiler: "Solid balanced field (~235°); good depth perception for guarding.",
+  corgi: "Moderate field (~230°); lower vantage point with decent peripheral vision.",
+  "great-dane": "Balanced field (~240°); elevated perspective with good range.",
+  "miniature-schnauzer": "Moderate field (~230°); alert vision for vermin hunting.",
+  
+  // Brachycephalic (AC)
+  bulldog: "Narrower field (200°); enhanced central focus with reduced periphery.",
+  "french-bulldog": "Limited field (~200°); stronger central acuity for face-to-face interaction.",
+  boxer: "Moderate-narrow field (~210°); better central focus than peripheral.",
+  "shih-tzu": "Reduced field (~190°); optimized for close companionship and eye contact.",
+  "yorkshire-terrier": "Limited field (~195°); enhanced central vision for lap companion role.",
+  cavalier: "Reduced field (~200°); excellent for direct eye contact and bonding.",
+  
   custom: "Tweak settings below for your dog's unique vision!",
 };
 
