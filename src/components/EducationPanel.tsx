@@ -5,12 +5,41 @@ export function EducationPanel() {
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-8 mt-12 mb-24 border">
       <h2 className="text-xl font-bold mb-4 text-blue-800">Learn about Dog Vision</h2>
-      <Tabs defaultValue="fields" className="w-full">
+      <Tabs defaultValue="retinal" className="w-full">
         <TabsList className="mb-4">
+          <TabsTrigger value="retinal">Retinal Configurations</TabsTrigger>
           <TabsTrigger value="fields">Visual Fields by Breed</TabsTrigger>
           <TabsTrigger value="cells">Cell Distribution Types</TabsTrigger>
           <TabsTrigger value="facts">Quick Facts</TabsTrigger>
         </TabsList>
+        <TabsContent value="retinal">
+          <div className="space-y-4">
+            <div>
+              <p className="mb-3">Dogs have two primary retinal configurations that determine how they process visual information:</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4 py-2">
+              <div className="font-bold text-blue-700 mb-2">Area Centralis (AC)</div>
+              <div className="text-sm space-y-1">
+                <p><span className="font-medium">Found in:</span> Brachycephalic breeds (Pugs, Bulldogs, Boxers, Shih Tzus)</p>
+                <p><span className="font-medium">Vision:</span> Enhanced central acuity for focused vision</p>
+                <p><span className="font-medium">Best for:</span> Direct eye contact, reading facial expressions, face-to-face commands</p>
+                <p><span className="font-medium">Screen viewing:</span> Better able to process localized visual information on screens</p>
+              </div>
+            </div>
+            <div className="border-l-4 border-yellow-500 pl-4 py-2">
+              <div className="font-bold text-yellow-700 mb-2">Visual Streak (VS)</div>
+              <div className="text-sm space-y-1">
+                <p><span className="font-medium">Found in:</span> Dolichocephalic breeds (Greyhounds, Collies, Wolves, Borzoi, Salukis, Afghan Hounds)</p>
+                <p><span className="font-medium">Vision:</span> Optimized for scanning the horizon</p>
+                <p><span className="font-medium">Best for:</span> Tracking movement across wide landscapes, detecting peripheral motion</p>
+                <p><span className="font-medium">Field of view:</span> Up to 270° wide visual field</p>
+              </div>
+            </div>
+            <div className="bg-gray-50 p-3 rounded text-sm">
+              <p><span className="font-medium">Mixed breeds:</span> Mesocephalic dogs (Labrador Retrievers, Beagles, Spaniels) offer a balance between focused and panoramic vision.</p>
+            </div>
+          </div>
+        </TabsContent>
         <TabsContent value="fields">
           <div className="space-y-2">
             <div>
