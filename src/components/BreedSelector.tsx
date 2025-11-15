@@ -1,5 +1,20 @@
-
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const BREEDS = [
   // Dolichocephalic breeds (VS - Visual Streak)
@@ -41,21 +56,56 @@ export function BreedSelector({
   value: BreedType;
   onChange: (s: BreedType) => void;
 }) {
+  const [open, setOpen] = useState(false);
+
+  const selectedBreed = BREEDS.find((breed) => breed.value === value);
+
   return (
     <div>
-      <label className="block mb-1 text-sm font-semibold">Select Breed</label>
-      <Select value={value} onValueChange={v => onChange(v as BreedType)}>
-        <SelectTrigger className="w-full max-w-xs">
-          <SelectValue placeholder="Choose breed..." />
-        </SelectTrigger>
-        <SelectContent className="max-h-[300px]">
-          {BREEDS.map((breed) => (
-            <SelectItem key={breed.value} value={breed.value}>
-              {breed.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <label className="block mb-2 text-sm font-semibold">Select Breed</label>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-full max-w-md justify-between"
+          >
+            {selectedBreed ? selectedBreed.label : "Choose breed..."}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-full max-w-md p-0 bg-background border shadow-lg" style={{ zIndex: 50 }}>
+          <Command className="bg-background">
+            <CommandInput placeholder="Search breeds..." className="h-9" />
+            <CommandList>
+              <CommandEmpty>No breed found.</CommandEmpty>
+              <CommandGroup>
+                {BREEDS.map((breed) => (
+                  <CommandItem
+                    key={breed.value}
+                    value={breed.value}
+                    keywords={[breed.label]}
+                    onSelect={(currentValue) => {
+                      onChange(currentValue as BreedType);
+                      setOpen(false);
+                    }}
+                    className="cursor-pointer"
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === breed.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {breed.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
       <p className="text-xs text-muted-foreground mt-1">~ indicates estimated field of view</p>
     </div>
   );
