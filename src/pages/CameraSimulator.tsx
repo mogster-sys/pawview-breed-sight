@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { BreedSelector, BreedType } from "@/components/BreedSelector";
 import { RetinalModeSelector, RetinalMode, getRetinalModeDescription } from "@/components/RetinalModeSelector";
 import { FieldOfViewOverlay } from "@/components/FieldOfViewOverlay";
+import { RetinalZoneOverlay } from "@/components/RetinalZoneOverlay";
 import { CameraFilters } from "@/components/CameraFilters";
 import { SplitComparison } from "@/components/SplitComparison";
 import { Navbar } from "@/components/Navbar";
@@ -205,6 +206,7 @@ export default function CameraSimulator() {
                       style={{ width: VIDEO_W, height: VIDEO_H, background: "#222" }}
                     />
                     <FieldOfViewOverlay width={VIDEO_W} height={VIDEO_H} breed={breed} />
+                    <RetinalZoneOverlay width={VIDEO_W} height={VIDEO_H} mode={retinalMode} />
                   </div>
                 </SplitComparison>
               ) : viewMode === "dog" ? (
@@ -216,6 +218,7 @@ export default function CameraSimulator() {
                     style={{ width: VIDEO_W, height: VIDEO_H, background: "#222" }}
                   />
                   <FieldOfViewOverlay width={VIDEO_W} height={VIDEO_H} breed={breed} />
+                  <RetinalZoneOverlay width={VIDEO_W} height={VIDEO_H} mode={retinalMode} />
                 </div>
               ) : (
                 <canvas
