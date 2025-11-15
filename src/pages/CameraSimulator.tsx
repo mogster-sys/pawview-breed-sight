@@ -10,8 +10,9 @@ import { toast } from "sonner";
 import { dogVisionFilter } from "@/utils/dogVisionFilters";
 import { savePhoto, getPhotoCount } from "@/utils/photoGallery";
 import { Button } from "@/components/ui/button";
-import { ImagePlus, Folder } from "lucide-react";
+import { ImagePlus, Folder, SplitSquareHorizontal, Eye, User } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const VIDEO_W = 700;
 const VIDEO_H = 440;
@@ -48,6 +49,7 @@ export default function CameraSimulator() {
   const [filters, setFilters] = useState({ dichro: true, contrast: false, brightness: false });
   const [snapshotReady, setSnapshotReady] = useState(false);
   const [galleryCount, setGalleryCount] = useState(0);
+  const [viewMode, setViewMode] = useState<"split" | "dog" | "human">("split");
 
   useEffect(() => {
     setGalleryCount(getPhotoCount());
@@ -166,16 +168,46 @@ export default function CameraSimulator() {
             )}
           </div>
           <div className="w-full flex-1 flex flex-col gap-3 items-center">
+            {/* View Mode Toggle */}
+            <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as typeof viewMode)} className="w-auto">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="split" className="flex items-center gap-2">
+                  <SplitSquareHorizontal className="w-4 h-4" />
+                  Split View
+                </TabsTrigger>
+                <TabsTrigger value="dog" className="flex items-center gap-2">
+                  <Eye className="w-4 h-4" />
+                  Dog Only
+                </TabsTrigger>
+                <TabsTrigger value="human" className="flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  Human Only
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+
             <div style={{ width: VIDEO_W, height: VIDEO_H, position: "relative" }}>
-              <SplitComparison width={VIDEO_W} height={VIDEO_H}>
-                {/* Human View */}
-                <canvas
-                  ref={canvasHumanRef}
-                  width={VIDEO_W}
-                  height={VIDEO_H}
-                  style={{ width: VIDEO_W, height: VIDEO_H, background: "#222" }}
-                />
-                {/* Dog View */}
+              {viewMode === "split" ? (
+                <SplitComparison width={VIDEO_W} height={VIDEO_H}>
+                  {/* Human View */}
+                  <canvas
+                    ref={canvasHumanRef}
+                    width={VIDEO_W}
+                    height={VIDEO_H}
+                    style={{ width: VIDEO_W, height: VIDEO_H, background: "#222" }}
+                  />
+                  {/* Dog View */}
+                  <div style={{ position: "relative", width: VIDEO_W, height: VIDEO_H }}>
+                    <canvas
+                      ref={canvasDogRef}
+                      width={VIDEO_W}
+                      height={VIDEO_H}
+                      style={{ width: VIDEO_W, height: VIDEO_H, background: "#222" }}
+                    />
+                    <FieldOfViewOverlay width={VIDEO_W} height={VIDEO_H} breed={breed} />
+                  </div>
+                </SplitComparison>
+              ) : viewMode === "dog" ? (
                 <div style={{ position: "relative", width: VIDEO_W, height: VIDEO_H }}>
                   <canvas
                     ref={canvasDogRef}
@@ -185,7 +217,14 @@ export default function CameraSimulator() {
                   />
                   <FieldOfViewOverlay width={VIDEO_W} height={VIDEO_H} breed={breed} />
                 </div>
-              </SplitComparison>
+              ) : (
+                <canvas
+                  ref={canvasHumanRef}
+                  width={VIDEO_W}
+                  height={VIDEO_H}
+                  style={{ width: VIDEO_W, height: VIDEO_H, background: "#222" }}
+                />
+              )}
               {/* Hidden video */}
               <video
                 ref={videoRef}
@@ -197,7 +236,9 @@ export default function CameraSimulator() {
               />
             </div>
             <div className="text-sm text-gray-500 mt-2">
-              Move the slider to compare Human and Dog views
+              {viewMode === "split" && "Drag the slider to compare Human and Dog views"}
+              {viewMode === "dog" && "Viewing: Dog Vision with selected retinal configuration"}
+              {viewMode === "human" && "Viewing: Human Vision (unfiltered camera feed)"}
             </div>
           </div>
         </div>
