@@ -50,13 +50,13 @@ const BREED_FIELD_DESC: Record<BreedType, string> = {
   corgi: "Moderate field (~230°); lower vantage point with decent peripheral vision.",
   "great-dane": "Balanced field (~240°); elevated perspective with good range.",
   "miniature-schnauzer": "Moderate field (~230°); alert vision for vermin hunting.",
+  "yorkshire-terrier": "Moderate-balanced field (~225°); alert companion with decent peripheral vision.",
   
   // Brachycephalic (AC)
   bulldog: "Narrower field (200°); enhanced central focus with reduced periphery.",
   "french-bulldog": "Limited field (~200°); stronger central acuity for face-to-face interaction.",
   boxer: "Moderate-narrow field (~210°); better central focus than peripheral.",
   "shih-tzu": "Reduced field (~190°); optimized for close companionship and eye contact.",
-  "yorkshire-terrier": "Limited field (~195°); enhanced central vision for lap companion role.",
   cavalier: "Reduced field (~200°); excellent for direct eye contact and bonding.",
   
   custom: "Tweak settings below for your dog's unique vision!",
