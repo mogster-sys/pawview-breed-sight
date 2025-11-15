@@ -39,7 +39,7 @@ const Index = () => {
             Experience seeing the world as your dog does—through their eyes!
           </h2>
           <div className="text-lg text-gray-800 max-w-2xl mx-auto mb-7">
-            Select your dog's breed; to simulate how differing color and visual fields look to them and retinal configuration (Area Centralis or Visual Streak), activate the live camera filter, and see exactly how different dogs process visual information. Educational, fun, and science-backed!
+            Select your dog's breed; to simulate how differing color and visual fields look to them with retinal configuration (Area Centralis or Visual Streak), activate the live camera filter, and see exactly how different dogs process visual information. Educational, fun, and science-backed!
           </div>
         </header>
         <div className="flex flex-wrap gap-8 justify-center items-stretch mt-10 mb-24">
