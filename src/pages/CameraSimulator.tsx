@@ -86,6 +86,13 @@ export default function CameraSimulator() {
     setGalleryCount(getPhotoCount());
   }, []);
 
+  // Auto-update retinal mode based on breed skull type
+  useEffect(() => {
+    const brachycephalicBreeds = ["pug", "bulldog", "french-bulldog", "boxer", "shih-tzu", "cavalier"];
+    const newMode: RetinalMode = brachycephalicBreeds.includes(breed) ? "area-centralis" : "visual-streak";
+    setRetinalMode(newMode);
+  }, [breed]);
+
   // Camera feed setup
   useEffect(() => {
     let stream: MediaStream;
