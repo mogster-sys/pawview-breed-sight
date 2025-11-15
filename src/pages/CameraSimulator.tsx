@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { dogVisionFilter } from "@/utils/dogVisionFilters";
 import { savePhoto, getPhotoCount } from "@/utils/photoGallery";
 import { Button } from "@/components/ui/button";
-import { ImagePlus, Folder, SplitSquareHorizontal, Eye, User } from "lucide-react";
+import { ImagePlus, Folder, SplitSquareHorizontal, Eye, User, Target } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -51,6 +51,7 @@ export default function CameraSimulator() {
   const [snapshotReady, setSnapshotReady] = useState(false);
   const [galleryCount, setGalleryCount] = useState(0);
   const [viewMode, setViewMode] = useState<"split" | "dog" | "human">("split");
+  const [showZoneOverlay, setShowZoneOverlay] = useState(true);
 
   useEffect(() => {
     setGalleryCount(getPhotoCount());
@@ -169,8 +170,9 @@ export default function CameraSimulator() {
             )}
           </div>
           <div className="w-full flex-1 flex flex-col gap-3 items-center">
-            {/* View Mode Toggle */}
-            <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as typeof viewMode)} className="w-auto">
+            {/* View Mode Toggle and Zone Overlay Toggle */}
+            <div className="flex items-center gap-4 w-full justify-center">
+              <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as typeof viewMode)} className="w-auto">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="split" className="flex items-center gap-2">
                   <SplitSquareHorizontal className="w-4 h-4" />
@@ -186,6 +188,17 @@ export default function CameraSimulator() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
+            
+            <Button
+              variant={showZoneOverlay ? "default" : "outline"}
+              size="sm"
+              onClick={() => setShowZoneOverlay(!showZoneOverlay)}
+              className="flex items-center gap-2"
+            >
+              <Target className="w-4 h-4" />
+              {showZoneOverlay ? "Hide" : "Show"} Zone
+            </Button>
+          </div>
 
             <div style={{ width: VIDEO_W, height: VIDEO_H, position: "relative" }}>
               {viewMode === "split" ? (
@@ -206,7 +219,7 @@ export default function CameraSimulator() {
                       style={{ width: VIDEO_W, height: VIDEO_H, background: "#222" }}
                     />
                     <FieldOfViewOverlay width={VIDEO_W} height={VIDEO_H} breed={breed} />
-                    <RetinalZoneOverlay width={VIDEO_W} height={VIDEO_H} mode={retinalMode} />
+                    {showZoneOverlay && <RetinalZoneOverlay width={VIDEO_W} height={VIDEO_H} mode={retinalMode} />}
                   </div>
                 </SplitComparison>
               ) : viewMode === "dog" ? (
@@ -218,7 +231,7 @@ export default function CameraSimulator() {
                     style={{ width: VIDEO_W, height: VIDEO_H, background: "#222" }}
                   />
                   <FieldOfViewOverlay width={VIDEO_W} height={VIDEO_H} breed={breed} />
-                  <RetinalZoneOverlay width={VIDEO_W} height={VIDEO_H} mode={retinalMode} />
+                  {showZoneOverlay && <RetinalZoneOverlay width={VIDEO_W} height={VIDEO_H} mode={retinalMode} />}
                 </div>
               ) : (
                 <canvas
