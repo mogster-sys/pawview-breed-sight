@@ -39,14 +39,14 @@ const Index = () => {
             Experience the world as your dog does—through their eyes!
           </h2>
           <div className="text-lg text-gray-800 max-w-2xl mx-auto mb-7">
-            Select your dog's breed, activate the live camera filter, and share photos showing how canine vision differs—including split comparisons and breed-based field of view. Educational, fun, and science-backed!
+            Select your dog's breed and retinal configuration (Area Centralis or Visual Streak), activate the live camera filter, and see exactly how different dogs process visual information. Educational, fun, and science-backed!
           </div>
         </header>
         <div className="flex flex-wrap gap-8 justify-center items-stretch mt-10 mb-24">
           <HomeAction
             icon={<Camera className="text-yellow-400" size={54} />}
             label="Live Dog Vision Camera"
-            desc="See through your dog's eyes in real time—split view, breed-based field. Capture and save filtered 'dog view' photos!"
+            desc="See through your dog's eyes in real time—choose retinal mode (AC/VS), split view comparison. Capture and save filtered 'dog view' photos!"
             href="/camera"
           />
           <HomeAction

@@ -1,46 +1,16 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { BreedSelector, BreedType } from "@/components/BreedSelector";
+import { RetinalModeSelector, RetinalMode, getRetinalModeDescription } from "@/components/RetinalModeSelector";
 import { FieldOfViewOverlay } from "@/components/FieldOfViewOverlay";
 import { CameraFilters } from "@/components/CameraFilters";
 import { SplitComparison } from "@/components/SplitComparison";
 import { Navbar } from "@/components/Navbar";
 import { toast } from "sonner";
+import { dogVisionFilter } from "@/utils/dogVisionFilters";
 
 const VIDEO_W = 700;
 const VIDEO_H = 440;
-
-// Helper: basic dog color filter (blue-yellow, block red)
-function dogVisionFilter(ctx: CanvasRenderingContext2D, w: number, h: number, filters: { dichro: boolean; contrast: boolean; brightness: boolean }) {
-  const imgData = ctx.getImageData(0, 0, w, h);
-  const d = imgData.data;
-  for (let i = 0; i < d.length; i += 4) {
-    let [r,g,b] = [d[i], d[i+1], d[i+2]];
-
-    if (filters.dichro) {
-      // Remove reds, simulate blue-yellow: compress to Y and B channels
-      const y = Math.round(0.299*r + 0.587*g + 0.114*b);
-      const blueish = Math.min(b + 50, 255);
-      // Human reds become dark gray or yellow
-      d[i]   = Math.round((y + blueish) * 0.5); // mix
-      d[i+1] = Math.round((y + b*0.2) * 0.7);
-      d[i+2] = blueish;
-    }
-    if (filters.contrast) {
-      // Increase contrast
-      let f = 1.4;
-      d[i]   = Math.min(255, (d[i]-128)*f + 128);
-      d[i+1] = Math.min(255, (d[i+1]-128)*f + 128);
-      d[i+2] = Math.min(255, (d[i+2]-128)*f + 128);
-    }
-    if (filters.brightness) {
-      d[i] = Math.min(255, d[i]+30);
-      d[i+1] = Math.min(255, d[i+1]+30);
-      d[i+2] = Math.min(255, d[i+2]+30);
-    }
-  }
-  ctx.putImageData(imgData, 0, 0);
-}
 
 // Save canvas as PNG
 function saveCanvas(canvas: HTMLCanvasElement, label:string="pawvision") {
@@ -74,6 +44,7 @@ export default function CameraSimulator() {
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [breed, setBreed] = useState<BreedType>("labrador");
+  const [retinalMode, setRetinalMode] = useState<RetinalMode>("visual-streak");
   const [filters, setFilters] = useState({ dichro: true, contrast: false, brightness: false });
   const [snapshotReady, setSnapshotReady] = useState(false);
 
@@ -116,7 +87,7 @@ export default function CameraSimulator() {
         const ctxD = canvasDogRef.current.getContext("2d");
         if (ctxD) {
           ctxD.drawImage(v, 0, 0, VIDEO_W, VIDEO_H);
-          dogVisionFilter(ctxD, VIDEO_W, VIDEO_H, filters);
+          dogVisionFilter(ctxD, VIDEO_W, VIDEO_H, filters, retinalMode);
         }
       }
       setSnapshotReady(true);
@@ -126,7 +97,7 @@ export default function CameraSimulator() {
       drawFrame();
     }
     return () => { cancelAnimationFrame(id); }
-  }, [streaming, filters]);
+  }, [streaming, filters, retinalMode]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/70 to-yellow-50">
@@ -138,14 +109,19 @@ export default function CameraSimulator() {
         <p className="mb-6 text-lg text-gray-600 text-center">
           View the world through your dog's eyes!<br />
           <span className="text-sm text-blue-700">
-            Choose a breed, drag to compare vision, and filter in real-time.
+            Choose breed, retinal configuration (AC for central focus or VS for horizon scanning), drag to compare vision, and filter in real-time.
           </span>
         </p>
         <div className="flex flex-col md:flex-row gap-8 w-full justify-between">
           <div className="flex flex-col gap-4 flex-1">
             <BreedSelector value={breed} onChange={setBreed} />
+            <RetinalModeSelector value={retinalMode} onChange={setRetinalMode} />
             <div className="bg-white border shadow-lg rounded-lg p-4 flex flex-col gap-2 w-full mt-2">
-              <span className="font-bold text-base text-blue-700 mb-1">How this breed sees:</span>
+              <span className="font-bold text-base text-blue-700 mb-1">Retinal Configuration:</span>
+              <span className="text-gray-700">{getRetinalModeDescription(retinalMode)}</span>
+            </div>
+            <div className="bg-white border shadow-lg rounded-lg p-4 flex flex-col gap-2 w-full mt-2">
+              <span className="font-bold text-base text-blue-700 mb-1">Field of View:</span>
               <span className="text-gray-700">{BREED_FIELD_DESC[breed]}</span>
             </div>
             <CameraFilters filters={filters} setFilters={setFilters} />
