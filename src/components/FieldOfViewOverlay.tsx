@@ -6,6 +6,10 @@ import type { BreedType } from "./BreedSelector";
 function getFieldOfViewAngle(breed: BreedType) {
   // Dolichocephalic breeds (VS - Visual Streak, wider field)
   if (breed === "greyhound") return 270;
+  if (breed === "borzoi") return 270;
+  if (breed === "saluki") return 270;
+  if (breed === "afghan-hound") return 265;
+  if (breed === "collie") return 260;
   if (breed === "doberman") return 260;
   if (breed === "german-pointer") return 250;
   if (breed === "dachshund") return 250;
@@ -22,9 +26,10 @@ function getFieldOfViewAngle(breed: BreedType) {
   if (breed === "corgi") return 230;
   if (breed === "great-dane") return 240;
   if (breed === "miniature-schnauzer") return 230;
-  if (breed === "yorkshire-terrier") return 225; // Moved to mesocephalic
+  if (breed === "yorkshire-terrier") return 225;
   
   // Brachycephalic breeds (AC - Area Centralis, narrower field)
+  if (breed === "pug") return 195;
   if (breed === "bulldog") return 200;
   if (breed === "french-bulldog") return 200;
   if (breed === "boxer") return 210;
