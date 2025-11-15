@@ -8,17 +8,17 @@ import { SplitComparison } from "@/components/SplitComparison";
 import { Navbar } from "@/components/Navbar";
 import { toast } from "sonner";
 import { dogVisionFilter } from "@/utils/dogVisionFilters";
+import { savePhoto, getPhotoCount } from "@/utils/photoGallery";
+import { Button } from "@/components/ui/button";
+import { ImagePlus, Folder } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const VIDEO_W = 700;
 const VIDEO_H = 440;
 
-// Save canvas as PNG
-function saveCanvas(canvas: HTMLCanvasElement, label:string="pawvision") {
-  const url = canvas.toDataURL("image/png");
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${label}-${Date.now()}.png`;
-  a.click();
+// Get canvas as data URL
+function getCanvasDataURL(canvas: HTMLCanvasElement): string {
+  return canvas.toDataURL("image/png");
 }
 
 const CAMERA_ERROR_HINT = (
@@ -47,6 +47,11 @@ export default function CameraSimulator() {
   const [retinalMode, setRetinalMode] = useState<RetinalMode>("visual-streak");
   const [filters, setFilters] = useState({ dichro: true, contrast: false, brightness: false });
   const [snapshotReady, setSnapshotReady] = useState(false);
+  const [galleryCount, setGalleryCount] = useState(0);
+
+  useEffect(() => {
+    setGalleryCount(getPhotoCount());
+  }, []);
 
   // Camera feed setup
   useEffect(() => {
@@ -125,16 +130,37 @@ export default function CameraSimulator() {
               <span className="text-gray-700">{BREED_FIELD_DESC[breed]}</span>
             </div>
             <CameraFilters filters={filters} setFilters={setFilters} />
-            <button
-              className={`mt-4 py-2 px-5 rounded-lg text-white font-semibold transition bg-yellow-500 hover:bg-yellow-600 shadow ${snapshotReady ? "" : "opacity-60 pointer-events-none"}`}
-              onClick={() => {
-                // Save dog vision canvas
-                if (canvasDogRef.current) saveCanvas(canvasDogRef.current, "pawvision-dogview");
-              }}
-              disabled={!snapshotReady}
-            >
-              Capture Dog Vision Photo
-            </button>
+            <div className="flex gap-2 mt-4">
+              <Button
+                className="flex-1"
+                onClick={() => {
+                  if (canvasDogRef.current) {
+                    const imageData = getCanvasDataURL(canvasDogRef.current);
+                    savePhoto({
+                      imageData,
+                      breed,
+                      retinalMode,
+                      filters,
+                    });
+                    setGalleryCount(getPhotoCount());
+                    toast.success("Photo saved to gallery!");
+                  }
+                }}
+                disabled={!snapshotReady}
+              >
+                <ImagePlus className="w-4 h-4 mr-2" />
+                Save to Gallery
+              </Button>
+              <Button
+                variant="outline"
+                asChild
+              >
+                <Link to="/gallery">
+                  <Folder className="w-4 h-4 mr-2" />
+                  Gallery ({galleryCount})
+                </Link>
+              </Button>
+            </div>
             {error === "camera" && (
               <div className="text-red-600 mt-4 text-sm">{CAMERA_ERROR_HINT}</div>
             )}

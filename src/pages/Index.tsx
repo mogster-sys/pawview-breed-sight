@@ -1,7 +1,7 @@
 
 import { Navbar } from "@/components/Navbar";
 import { Link } from "react-router-dom";
-import { Dog, Camera, BookText } from "lucide-react";
+import { Dog, Camera, BookText, Folder } from "lucide-react";
 
 const HomeAction = ({
   icon,
@@ -48,6 +48,12 @@ const Index = () => {
             label="Live Dog Vision Camera"
             desc="See through your dog's eyes in real time—choose retinal mode (AC/VS), split view comparison. Capture and save filtered 'dog view' photos!"
             href="/camera"
+          />
+          <HomeAction
+            icon={<Folder className="text-blue-400" size={50} />}
+            label="Photo Gallery"
+            desc="View and compare your saved dog vision photos side-by-side. Analyze different breeds and retinal configurations."
+            href="/gallery"
           />
           <HomeAction
             icon={<BookText className="text-blue-500" size={50} />}
