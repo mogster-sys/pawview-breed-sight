@@ -36,7 +36,7 @@ const Index = () => {
             🦴 My Doggles
           </h1>
           <h2 className="text-xl font-medium text-blue-700 mb-8">
-            Experience the world as your dog does—through their eyes!
+            Experience seeing the world as your dog does—through their eyes!
           </h2>
           <div className="text-lg text-gray-800 max-w-2xl mx-auto mb-7">
             Select your dog's breed and retinal configuration (Area Centralis or Visual Streak), activate the live camera filter, and see exactly how different dogs process visual information. Educational, fun, and science-backed!
