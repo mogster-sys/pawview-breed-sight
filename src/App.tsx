@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import OfflineIndicator from "@/components/OfflineIndicator";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CameraSimulator from "./pages/CameraSimulator";
@@ -24,6 +25,7 @@ const App = () => (
         <AuthProvider>
           <SubscriptionProvider>
             <TooltipProvider>
+              <OfflineIndicator />
               <Toaster />
               <Sonner />
               <Routes>
