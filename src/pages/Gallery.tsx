@@ -5,10 +5,14 @@ import { StorageWarning } from "@/components/StorageWarning";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Download, Trash, ChevronLeft, ChevronRight, Share2 } from "lucide-react";
+import { Trash2, Download, Trash, ChevronLeft, ChevronRight, Share2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { SocialShareButtons } from "@/components/SocialShareButtons";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCommunityPhotos } from "@/hooks/useCommunityPhotos";
+import { CommunityPhotoCard } from "@/components/CommunityPhotoCard";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +28,7 @@ import {
 const PAGE_SIZE = 20;
 
 export default function Gallery() {
+  const { user } = useAuth();
   const [photos, setPhotos] = useState<SavedPhoto[]>([]);
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -36,6 +41,8 @@ export default function Gallery() {
   });
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [photoToShare, setPhotoToShare] = useState<SavedPhoto | null>(null);
+  const [activeTab, setActiveTab] = useState<"my-photos" | "community">("my-photos");
+  const { photos: communityPhotos, loading: communityLoading, refetch: refetchCommunity } = useCommunityPhotos();
 
   useEffect(() => {
     loadPhotos(0);
@@ -128,13 +135,8 @@ export default function Gallery() {
             <h1 className="font-bold text-3xl text-blue-800 mb-2">
               Photo Gallery
             </h1>
-            <p className="text-gray-600">
-              {storageInfo.count} total {storageInfo.count === 1 ? 'photo' : 'photos'} • 
-              Page {currentPage + 1} • 
-              Select up to 4 to compare
-            </p>
           </div>
-          {photos.length > 0 && (
+          {activeTab === "my-photos" && photos.length > 0 && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="destructive" size="sm">
@@ -160,63 +162,75 @@ export default function Gallery() {
           )}
         </div>
 
-        {/* Comparison View */}
-        {selectedPhotos.length > 0 && (
-          <div className="mb-8 bg-white rounded-lg shadow-lg p-6 border-2 border-blue-200">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-semibold text-xl text-blue-800">
-                Comparison View ({selectedPhotos.length}/4 selected)
-              </h2>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setSelectedPhotos([])}
-              >
-                Clear Selection
-              </Button>
-            </div>
-            <div className={`grid gap-4 ${
-              selectedPhotos.length === 1 ? 'grid-cols-1' :
-              selectedPhotos.length === 2 ? 'grid-cols-2' :
-              selectedPhotos.length === 3 ? 'grid-cols-3' :
-              'grid-cols-2 md:grid-cols-4'
-            }`}>
-              {selectedPhotoObjects.map(photo => (
-                <div key={photo.id} className="border rounded-lg p-3 bg-gray-50">
-                  <img 
-                    src={photo.imageData} 
-                    alt={`${photo.breed} ${photo.retinalMode}`}
-                    className="w-full rounded mb-2 border"
-                  />
-                  <div className="text-xs space-y-1">
-                    <div className="font-semibold text-blue-700">{photo.breed}</div>
-                    <div className="text-gray-600">
-                      {photo.retinalMode === "area-centralis" ? "AC" : "VS"}
-                    </div>
-                    <div className="flex gap-1 flex-wrap">
-                      {photo.filters.dichro && <Badge variant="secondary" className="text-xs">Dichro</Badge>}
-                      {photo.filters.contrast && <Badge variant="secondary" className="text-xs">Contrast</Badge>}
-                      {photo.filters.brightness && <Badge variant="secondary" className="text-xs">Bright</Badge>}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)} className="mb-6">
+          <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsTrigger value="my-photos">
+              My Photos ({storageInfo.count})
+            </TabsTrigger>
+            <TabsTrigger value="community" className="gap-2">
+              <Users className="h-4 w-4" />
+              Community
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Gallery Grid */}
-        {photos.length === 0 ? (
-          <Card className="p-12 text-center">
-            <p className="text-gray-500 mb-4">No photos saved yet</p>
-            <Button asChild>
-              <a href="/camera">Go to Camera</a>
-            </Button>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {photos.map(photo => (
-              <Card 
+          <TabsContent value="my-photos" className="mt-6">
+            {selectedPhotos.length > 0 && (
+              <div className="mb-8 bg-white rounded-lg shadow-lg p-6 border-2 border-blue-200">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="font-semibold text-xl text-blue-800">
+                    Comparison View ({selectedPhotos.length}/4 selected)
+                  </h2>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setSelectedPhotos([])}
+                  >
+                    Clear Selection
+                  </Button>
+                </div>
+                <div className={`grid gap-4 ${
+                  selectedPhotos.length === 1 ? 'grid-cols-1' :
+                  selectedPhotos.length === 2 ? 'grid-cols-2' :
+                  selectedPhotos.length === 3 ? 'grid-cols-3' :
+                  'grid-cols-2 md:grid-cols-4'
+                }`}>
+                  {selectedPhotoObjects.map(photo => (
+                    <div key={photo.id} className="border rounded-lg p-3 bg-gray-50">
+                      <img 
+                        src={photo.imageData} 
+                        alt={`${photo.breed} ${photo.retinalMode}`}
+                        className="w-full rounded mb-2 border"
+                      />
+                      <div className="text-xs space-y-1">
+                        <div className="font-semibold text-blue-700">{photo.breed}</div>
+                        <div className="text-gray-600">
+                          {photo.retinalMode === "area-centralis" ? "AC" : "VS"}
+                        </div>
+                        <div className="flex gap-1 flex-wrap">
+                          {photo.filters.dichro && <Badge variant="secondary" className="text-xs">Dichro</Badge>}
+                          {photo.filters.contrast && <Badge variant="secondary" className="text-xs">Contrast</Badge>}
+                          {photo.filters.brightness && <Badge variant="secondary" className="text-xs">Bright</Badge>}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Gallery Grid */}
+            {photos.length === 0 ? (
+              <Card className="p-12 text-center">
+                <p className="text-gray-500 mb-4">No photos saved yet</p>
+                <Button asChild>
+                  <a href="/camera">Go to Camera</a>
+                </Button>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {photos.map(photo => (
+                  <Card
                 key={photo.id} 
                 className={`overflow-hidden cursor-pointer transition-all hover:shadow-lg ${
                   selectedPhotos.includes(photo.id) ? 'ring-2 ring-blue-500' : ''
@@ -324,6 +338,40 @@ export default function Gallery() {
             </Button>
           </div>
         )}
+          </TabsContent>
+
+          <TabsContent value="community" className="mt-6">
+            {!user ? (
+              <Card className="p-12 text-center">
+                <p className="text-gray-500 mb-4">Sign in to view community photos</p>
+                <Button asChild>
+                  <a href="/auth">Sign In</a>
+                </Button>
+              </Card>
+            ) : communityLoading ? (
+              <div className="text-center p-12">
+                <p className="text-gray-500">Loading community photos...</p>
+              </div>
+            ) : communityPhotos.length === 0 ? (
+              <Card className="p-12 text-center">
+                <p className="text-gray-500 mb-4">No community photos yet</p>
+                <p className="text-sm text-muted-foreground">
+                  Be the first to share your dog vision photos!
+                </p>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {communityPhotos.map(photo => (
+                  <CommunityPhotoCard
+                    key={photo.id}
+                    photo={photo}
+                    onUpdate={refetchCommunity}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Share Dialog */}
