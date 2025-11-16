@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { SubscriptionCard } from "@/components/SubscriptionCard";
+import { PremiumComparison } from "@/components/PremiumComparison";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, X, Sparkles } from "lucide-react";
@@ -78,6 +79,11 @@ export default function Premium() {
             <Sparkles className="mr-2" size={24} />
             {subscribed ? "You're Premium!" : "Get Premium Now"}
           </Button>
+        </div>
+
+        {/* Interactive Comparison Slider */}
+        <div className="mb-12">
+          <PremiumComparison />
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
