@@ -1,6 +1,8 @@
 
-import { Dog, BookText, Camera, Folder, Crown } from "lucide-react";
+import { Dog, BookText, Camera, Folder, Crown, LogOut, LogIn } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 const links = [
   { to: "/", icon: <Dog size={22} />, label: "Home" },
@@ -12,6 +14,8 @@ const links = [
 
 export const Navbar = () => {
   const location = useLocation();
+  const { user, signOut } = useAuth();
+  
   return (
     <nav className="w-full bg-white/95 border-b border-gray-200 shadow-sm z-40 sticky top-0">
       <div className="flex max-w-screen-xl mx-auto px-6 py-4 items-center gap-8">
@@ -32,6 +36,21 @@ export const Navbar = () => {
               {link.icon} {link.label}
             </Link>
           ))}
+        </div>
+        <div>
+          {user ? (
+            <Button onClick={signOut} variant="outline" className="gap-2">
+              <LogOut size={18} />
+              Sign Out
+            </Button>
+          ) : (
+            <Link to="/auth">
+              <Button variant="default" className="gap-2">
+                <LogIn size={18} />
+                Sign In
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
