@@ -1,5 +1,5 @@
 
-import { Dog, BookText, Camera, Folder } from "lucide-react";
+import { Dog, BookText, Camera, Folder, Crown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const links = [
@@ -7,6 +7,7 @@ const links = [
   { to: "/camera", icon: <Camera size={22} />, label: "Dog Vision Camera" },
   { to: "/gallery", icon: <Folder size={22} />, label: "Gallery" },
   { to: "/learn", icon: <BookText size={22} />, label: "Educational" },
+  { to: "/premium", icon: <Crown size={22} />, label: "Premium" },
 ];
 
 export const Navbar = () => {

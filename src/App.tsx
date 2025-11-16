@@ -11,6 +11,7 @@ import CameraSimulator from "./pages/CameraSimulator";
 import LearnPage from "./pages/Learn";
 import Gallery from "./pages/Gallery";
 import Success from "./pages/Success";
+import Premium from "./pages/Premium";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/camera" element={<CameraSimulator />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/learn" element={<LearnPage />} />
+            <Route path="/premium" element={<Premium />} />
             <Route path="/success" element={<Success />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
