@@ -1,9 +1,33 @@
 import { Navbar } from "@/components/Navbar";
 import { SubscriptionCard } from "@/components/SubscriptionCard";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Check, X, Sparkles } from "lucide-react";
+import { useSubscription } from "@/contexts/SubscriptionContext";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export default function Premium() {
+  const { createCheckout, subscribed } = useSubscription();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleGetPremium = async () => {
+    if (!user) {
+      navigate("/auth");
+      toast.info("Please sign in to subscribe");
+      return;
+    }
+    
+    if (subscribed) {
+      toast.info("You're already a premium member!");
+      return;
+    }
+
+    await createCheckout();
+  };
+
   const features = [
     {
       name: "Dog Vision Simulations",
@@ -43,9 +67,17 @@ export default function Premium() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-black text-blue-700 mb-4">Premium Features</h1>
-          <p className="text-xl text-gray-700 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-8">
             Unlock the full potential of My Doggles with unlimited simulations, advanced features, and priority support
           </p>
+          <Button 
+            onClick={handleGetPremium}
+            size="lg"
+            className="text-lg px-8 py-6 h-auto bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg hover:shadow-xl transition-all"
+          >
+            <Sparkles className="mr-2" size={24} />
+            {subscribed ? "You're Premium!" : "Get Premium Now"}
+          </Button>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
