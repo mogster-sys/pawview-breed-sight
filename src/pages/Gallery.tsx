@@ -5,8 +5,10 @@ import { StorageWarning } from "@/components/StorageWarning";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Download, Trash, ChevronLeft, ChevronRight } from "lucide-react";
+import { Trash2, Download, Trash, ChevronLeft, ChevronRight, Share2 } from "lucide-react";
 import { toast } from "sonner";
+import { SocialShareButtons } from "@/components/SocialShareButtons";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,6 +34,8 @@ export default function Gallery() {
     shouldMoveToDevice: false,
     nearLimit: false,
   });
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [photoToShare, setPhotoToShare] = useState<SavedPhoto | null>(null);
 
   useEffect(() => {
     loadPhotos(0);
@@ -241,9 +245,23 @@ export default function Gallery() {
                           variant="ghost"
                           onClick={(e) => {
                             e.stopPropagation();
+                            setPhotoToShare(photo);
+                            setShareDialogOpen(true);
+                          }}
+                          className="h-7 w-7 p-0"
+                          title="Share"
+                        >
+                          <Share2 className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={(e) => {
+                            e.stopPropagation();
                             downloadPhoto(photo);
                           }}
                           className="h-7 w-7 p-0"
+                          title="Download"
                         >
                           <Download className="w-3 h-3" />
                         </Button>
@@ -255,6 +273,7 @@ export default function Gallery() {
                             handleDelete(photo.id);
                           }}
                           className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
+                          title="Delete"
                         >
                           <Trash2 className="w-3 h-3" />
                         </Button>
@@ -306,6 +325,40 @@ export default function Gallery() {
           </div>
         )}
       </div>
+
+      {/* Share Dialog */}
+      <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Share Your Dog Vision Photo!</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            {photoToShare && (
+              <>
+                <div className="flex justify-center">
+                  <img
+                    src={photoToShare.imageData}
+                    alt="Photo to share"
+                    className="max-w-full h-auto rounded-lg border"
+                    style={{ maxHeight: "200px" }}
+                  />
+                </div>
+                <SocialShareButtons
+                  imageUrl={photoToShare.imageData}
+                  breed={photoToShare.breed}
+                  retinalMode={photoToShare.retinalMode}
+                  filters={
+                    Object.entries(photoToShare.filters)
+                      .filter(([_, v]) => v)
+                      .map(([k]) => k)
+                      .join(", ") || "none"
+                  }
+                />
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

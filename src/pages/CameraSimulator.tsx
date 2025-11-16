@@ -11,9 +11,11 @@ import { toast } from "sonner";
 import { dogVisionFilter } from "@/utils/dogVisionFilters";
 import { savePhoto, getPhotoCount } from "@/utils/photoGallery";
 import { Button } from "@/components/ui/button";
-import { ImagePlus, Folder, SplitSquareHorizontal, Eye, User, Target } from "lucide-react";
+import { ImagePlus, Folder, SplitSquareHorizontal, Eye, User, Target, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SocialShareButtons } from "@/components/SocialShareButtons";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const VIDEO_W = 700;
 const VIDEO_H = 440;
@@ -81,6 +83,13 @@ export default function CameraSimulator() {
   const [galleryCount, setGalleryCount] = useState(0);
   const [viewMode, setViewMode] = useState<"split" | "dog" | "human">("split");
   const [showZoneOverlay, setShowZoneOverlay] = useState(true);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [lastSavedPhoto, setLastSavedPhoto] = useState<{
+    imageUrl: string;
+    breed: string;
+    retinalMode: string;
+    filters: string;
+  } | null>(null);
 
   useEffect(() => {
     getPhotoCount().then(setGalleryCount);
@@ -298,6 +307,35 @@ export default function CameraSimulator() {
           </div>
         </div>
       </div>
+
+      {/* Share Dialog */}
+      <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Share Your Dog Vision Photo!</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            {lastSavedPhoto && (
+              <>
+                <div className="flex justify-center">
+                  <img
+                    src={lastSavedPhoto.imageUrl}
+                    alt="Saved photo"
+                    className="max-w-full h-auto rounded-lg border"
+                    style={{ maxHeight: "200px" }}
+                  />
+                </div>
+                <SocialShareButtons
+                  imageUrl={lastSavedPhoto.imageUrl}
+                  breed={lastSavedPhoto.breed}
+                  retinalMode={lastSavedPhoto.retinalMode}
+                  filters={lastSavedPhoto.filters}
+                />
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
