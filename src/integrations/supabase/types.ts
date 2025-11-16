@@ -14,6 +14,112 @@ export type Database = {
   }
   public: {
     Tables: {
+      community_photos: {
+        Row: {
+          breed: string
+          caption: string | null
+          comments_count: number
+          created_at: string
+          filters: Json
+          id: string
+          likes_count: number
+          retinal_mode: string
+          storage_path: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          breed: string
+          caption?: string | null
+          comments_count?: number
+          created_at?: string
+          filters?: Json
+          id?: string
+          likes_count?: number
+          retinal_mode: string
+          storage_path: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          breed?: string
+          caption?: string | null
+          comments_count?: number
+          created_at?: string
+          filters?: Json
+          id?: string
+          likes_count?: number
+          retinal_mode?: string
+          storage_path?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      photo_comments: {
+        Row: {
+          comment: string
+          created_at: string
+          id: string
+          photo_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment: string
+          created_at?: string
+          id?: string
+          photo_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string
+          created_at?: string
+          id?: string
+          photo_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photo_comments_photo_id_fkey"
+            columns: ["photo_id"]
+            isOneToOne: false
+            referencedRelation: "community_photos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      photo_likes: {
+        Row: {
+          created_at: string
+          id: string
+          photo_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          photo_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          photo_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photo_likes_photo_id_fkey"
+            columns: ["photo_id"]
+            isOneToOne: false
+            referencedRelation: "community_photos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
