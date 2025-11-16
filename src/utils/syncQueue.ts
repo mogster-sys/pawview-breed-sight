@@ -2,7 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface QueuedOperation {
   id: string;
-  type: 'upload_photo' | 'like_photo' | 'comment_photo' | 'delete_photo';
+  type: 'upload_photo' | 'like_photo' | 'unlike_photo' | 'comment_photo' | 'delete_photo';
   data: any;
   timestamp: number;
   retries: number;
@@ -63,6 +63,15 @@ const processOperation = async (operation: QueuedOperation): Promise<boolean> =>
           .from('photo_likes')
           .insert(operation.data);
         if (likeError) throw likeError;
+        break;
+
+      case 'unlike_photo':
+        const { error: unlikeError } = await supabase
+          .from('photo_likes')
+          .delete()
+          .eq('photo_id', operation.data.photo_id)
+          .eq('user_id', operation.data.user_id);
+        if (unlikeError) throw unlikeError;
         break;
 
       case 'comment_photo':
