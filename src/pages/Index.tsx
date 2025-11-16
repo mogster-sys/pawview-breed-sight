@@ -2,6 +2,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Link } from "react-router-dom";
 import { Dog, Camera, BookText, Folder } from "lucide-react";
+import { SubscriptionCard } from "@/components/SubscriptionCard";
 
 const HomeAction = ({
   icon,
@@ -42,6 +43,11 @@ const Index = () => {
             Select your dog's breed; to simulate how color and visual fields look different to them according to breed specific retinal configuration (Area Centralis or Visual Streak), activate the live camera filter, and see exactly how different dogs process visual information. Educational, fun, and science-backed!
           </div>
         </header>
+        
+        <div className="max-w-md mx-auto mb-10">
+          <SubscriptionCard />
+        </div>
+        
         <div className="flex flex-wrap gap-8 justify-center items-stretch mt-10 mb-24">
           <HomeAction
             icon={<Camera className="text-yellow-400" size={54} />}
