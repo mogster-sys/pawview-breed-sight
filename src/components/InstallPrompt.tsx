@@ -71,29 +71,47 @@ export const InstallPrompt = () => {
   // iOS-specific instructions
   if (isIOSDevice) {
     return (
-      <div className="fixed bottom-4 left-4 right-4 z-50 animate-in slide-in-from-bottom-4">
-        <div className="bg-white rounded-xl shadow-xl border border-blue-200 p-4">
-          <div className="flex items-start gap-3">
-            <div className="bg-blue-100 rounded-full p-2 shrink-0">
-              <Share className="h-6 w-6 text-blue-600" />
+      <>
+        {/* Arrow pointing to Safari's share button (bottom center on iOS) */}
+        <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 animate-bounce">
+          <div className="bg-blue-600 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-lg flex items-center gap-1">
+            <Share className="h-4 w-4" />
+            <span>Tap here first</span>
+          </div>
+          <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-blue-600 mx-auto" />
+        </div>
+        
+        <div className="fixed bottom-24 left-4 right-4 z-50 animate-in slide-in-from-bottom-4">
+          <div className="bg-white rounded-xl shadow-xl border border-blue-200 p-4">
+            <div className="flex items-start gap-3">
+              <div className="bg-blue-100 rounded-full p-2 shrink-0">
+                <Share className="h-6 w-6 text-blue-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-blue-900">Install My Doggles</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  Tap <span className="inline-flex items-center"><Share className="h-4 w-4 mx-1" /></span> 
+                  then <span className="font-medium">"Add to Home Screen"</span>
+                </p>
+              </div>
+              <button
+                onClick={handleDismiss}
+                className="p-1 text-gray-400 hover:text-gray-600 shrink-0"
+                aria-label="Dismiss"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-blue-900">Install My Doggles</p>
-              <p className="text-sm text-gray-600 mt-1">
-                Tap <span className="inline-flex items-center"><Share className="h-4 w-4 mx-1" /></span> 
-                then <span className="font-medium">"Add to Home Screen"</span>
-              </p>
-            </div>
-            <button
+            <Button
               onClick={handleDismiss}
-              className="p-1 text-gray-400 hover:text-gray-600 shrink-0"
-              aria-label="Dismiss"
+              size="sm"
+              className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white"
             >
-              <X className="h-5 w-5" />
-            </button>
+              Got it
+            </Button>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
