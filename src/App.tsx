@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { SyncQueueProvider } from "@/contexts/SyncQueueContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import OfflineIndicator from "@/components/OfflineIndicator";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CameraSimulator from "./pages/CameraSimulator";
@@ -28,6 +29,7 @@ const App = () => (
             <SyncQueueProvider>
               <TooltipProvider>
                 <OfflineIndicator />
+                <InstallPrompt />
                 <Toaster />
                 <Sonner />
                 <Routes>
