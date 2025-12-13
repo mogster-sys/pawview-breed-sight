@@ -100,7 +100,7 @@ export default function Premium() {
             <div className="text-center mb-12">
               <h1 className="text-5xl font-black text-blue-700 mb-4">Premium Features</h1>
               <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-8">
-                Unlock the full potential of My Doggles with unlimited simulations, advanced features, and priority support
+                Unlock extra features to get more from My Doggles
               </p>
               <Button 
                 onClick={handleGetPremium}
@@ -160,35 +160,6 @@ export default function Premium() {
                   </CardContent>
                 </Card>
 
-                <div className="mt-8 grid md:grid-cols-2 gap-6">
-                  <Card className="border-2 border-primary/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Check className="text-primary" />
-                        Unlimited Creativity
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        No daily limits means you can explore dog vision for every photo, every moment, without restrictions.
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-2 border-primary/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Check className="text-primary" />
-                        Advanced Technology
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        Access all retinal modes and breed-specific filters for the most accurate dog vision simulation available.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
               </div>
 
               <div>
