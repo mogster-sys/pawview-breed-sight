@@ -49,16 +49,6 @@ export default function Premium() {
       free: "Not available",
       premium: "Save & organize unlimited photos",
     },
-    {
-      name: "Breed-Specific Filters",
-      free: "Limited breeds",
-      premium: "All dog breeds",
-    },
-    {
-      name: "Export Quality",
-      free: "Standard resolution",
-      premium: "High-resolution exports",
-    },
   ];
 
   return (
