@@ -83,7 +83,7 @@ export default function Auth() {
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-yellow-50 to-yellow-100 flex items-center justify-center p-6">
       <SEO
         title="Sign In"
-        description="Sign in or create an account to access My Doggles features, save your photos, and unlock premium dog vision simulations."
+        description="Sign in or create an account to access My Doggles features and save your dog vision photos."
         canonical="/auth"
       />
       <div className="w-full max-w-md">
