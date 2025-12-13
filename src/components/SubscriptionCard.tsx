@@ -38,7 +38,7 @@ export function SubscriptionCard() {
               <li>Unlimited dog vision simulations</li>
               <li>Save photos to gallery</li>
               <li>Advanced retinal mode options</li>
-              <li>Priority support</li>
+              
             </ul>
           </div>
           <div className="text-2xl font-bold">$4.99/month</div>
