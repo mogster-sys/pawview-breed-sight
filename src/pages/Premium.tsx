@@ -50,11 +50,6 @@ export default function Premium() {
       premium: "Save & organize unlimited photos",
     },
     {
-      name: "Retinal Mode Options",
-      free: "Basic mode only",
-      premium: "All advanced retinal modes",
-    },
-    {
       name: "Breed-Specific Filters",
       free: "Limited breeds",
       premium: "All dog breeds",
