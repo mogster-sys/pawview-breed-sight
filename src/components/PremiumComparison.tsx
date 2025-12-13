@@ -171,8 +171,8 @@ export const PremiumComparison = () => {
         }`}>
           <p className={`font-semibold ${isPremium ? 'text-primary' : 'text-muted-foreground'}`}>
             {isPremium 
-              ? '🎉 You\'re viewing Premium features - unlimited possibilities!' 
-              : '🔒 Limited features - upgrade to unlock everything!'}
+              ? 'Premium features' 
+              : 'Free features'}
           </p>
         </div>
       </CardContent>
