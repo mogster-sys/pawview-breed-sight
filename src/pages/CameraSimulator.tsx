@@ -175,6 +175,9 @@ export default function CameraSimulator() {
           <div className="flex flex-col gap-4 flex-1">
             <BreedSelector value={breed} onChange={setBreed} />
             <RetinalModeSelector value={retinalMode} onChange={setRetinalMode} />
+            <p className="text-sm text-gray-600 italic">
+              Each of these selections represents an aspect of vision that differs between breeds of dog.
+            </p>
             <div className="bg-white border shadow-lg rounded-lg p-4 flex flex-col gap-2 w-full mt-2">
               <span className="font-bold text-base text-blue-700 mb-1">Retinal Configuration:</span>
               <span className="text-gray-700">{getRetinalModeDescription(retinalMode)}</span>
@@ -184,6 +187,9 @@ export default function CameraSimulator() {
               <span className="text-gray-700">{BREED_FIELD_DESC[breed]}</span>
             </div>
             <CameraFilters filters={filters} setFilters={setFilters} />
+            <p className="text-sm text-gray-600 italic mt-2">
+              Each of these buttons represents an aspect of vision that differs from human to dog.
+            </p>
             <div className="flex gap-2 mt-4">
               <Button
                 className="flex-1"
