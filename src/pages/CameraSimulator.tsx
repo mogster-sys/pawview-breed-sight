@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { BreedSelector, BreedType } from "@/components/BreedSelector";
 import { RetinalModeSelector, RetinalMode, getRetinalModeDescription } from "@/components/RetinalModeSelector";
@@ -7,6 +6,7 @@ import { RetinalZoneOverlay } from "@/components/RetinalZoneOverlay";
 import { CameraFilters } from "@/components/CameraFilters";
 import { SplitComparison } from "@/components/SplitComparison";
 import { Navbar } from "@/components/Navbar";
+import { SEO } from "@/components/SEO";
 import { toast } from "sonner";
 import { dogVisionFilter } from "@/utils/dogVisionFilters";
 import { savePhoto, getPhotoCount } from "@/utils/photoGallery";
@@ -155,6 +155,11 @@ export default function CameraSimulator() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/70 to-yellow-50">
+      <SEO
+        title="Dog Vision Camera Simulator"
+        description="See through your dog's eyes with our live camera simulator. Apply breed-specific vision filters and compare human vs dog vision in real-time."
+        canonical="/camera"
+      />
       <Navbar />
       <div className="max-w-4xl mx-auto mt-10 flex flex-col items-center">
         <h1 className="font-bold text-3xl text-blue-800 mb-3">

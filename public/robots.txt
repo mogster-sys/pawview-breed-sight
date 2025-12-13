@@ -1,3 +1,6 @@
+# My Doggles - Dog Vision Simulator
+# https://mydoggles.com
+
 User-agent: Googlebot
 Allow: /
 
@@ -12,3 +15,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://mydoggles.com/sitemap.xml

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
+import { SEO } from "@/components/SEO";
 import { SavedPhoto, getGalleryPhotos, deletePhoto, clearGallery, getStorageInfo } from "@/utils/photoGallery";
 import { StorageWarning } from "@/components/StorageWarning";
 import { Button } from "@/components/ui/button";
@@ -123,6 +124,11 @@ export default function Gallery() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/70 to-yellow-50">
+      <SEO
+        title="Photo Gallery"
+        description="View and compare your saved dog vision photos. Explore community uploads and see how different dog breeds perceive the world."
+        canonical="/gallery"
+      />
       <Navbar />
       <div className="max-w-7xl mx-auto mt-10 px-4 pb-10">
         {/* Storage Warning */}
