@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 import { useSubscription } from "@/contexts/SubscriptionContext";
+import { SEO } from "@/components/SEO";
 import { Navbar } from "@/components/Navbar";
 
 export default function Success() {
@@ -17,6 +18,11 @@ export default function Success() {
 
   return (
     <>
+      <SEO
+        title="Payment Successful"
+        description="Thank you for subscribing to My Doggles Premium. Your subscription is now active."
+        canonical="/success"
+      />
       <Navbar />
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="max-w-md w-full">

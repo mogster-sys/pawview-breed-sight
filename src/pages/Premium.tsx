@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+import { SEO } from "@/components/SEO";
 import { SubscriptionCard } from "@/components/SubscriptionCard";
 import { PremiumComparison } from "@/components/PremiumComparison";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -72,6 +73,11 @@ export default function Premium() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-yellow-50 to-yellow-100">
+      <SEO
+        title="Premium Features"
+        description="Unlock unlimited dog vision simulations, advanced breed filters, and priority support with My Doggles Premium for $4.99/month."
+        canonical="/premium"
+      />
       <Navbar />
       <div className="max-w-7xl mx-auto px-6 py-12">
         {isLoading ? (

@@ -1,5 +1,5 @@
-
 import { Navbar } from "@/components/Navbar";
+import { SEO } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { Dog, Camera, BookText, Folder } from "lucide-react";
 
@@ -29,6 +29,11 @@ const HomeAction = ({
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-yellow-50 to-yellow-100">
+      <SEO
+        title="My Doggles - See Through Your Dog's Eyes"
+        description="Experience the world as your dog does. Simulate dog vision with breed-specific filters, retinal configurations, and live camera effects."
+        canonical="/"
+      />
       <Navbar />
       <div className="max-w-5xl mx-auto py-8 px-2">
         <header className="my-10 text-center">

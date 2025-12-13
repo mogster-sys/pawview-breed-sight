@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SEO } from "@/components/SEO";
 import { Dog } from "lucide-react";
 import { z } from "zod";
 
@@ -80,6 +81,11 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-yellow-50 to-yellow-100 flex items-center justify-center p-6">
+      <SEO
+        title="Sign In"
+        description="Sign in or create an account to access My Doggles features, save your photos, and unlock premium dog vision simulations."
+        canonical="/auth"
+      />
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center gap-2 text-blue-700 font-black text-3xl mb-8">
           <Dog size={40} className="text-yellow-400" />
