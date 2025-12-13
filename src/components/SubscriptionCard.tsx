@@ -37,7 +37,7 @@ export function SubscriptionCard() {
             <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
               <li>Unlimited dog vision simulations</li>
               <li>Save photos to gallery</li>
-              <li>Advanced retinal mode options</li>
+              
               
             </ul>
           </div>
