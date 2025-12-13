@@ -3,14 +3,19 @@ import { Dog, BookText, Camera, Folder, Crown, LogOut, LogIn } from "lucide-reac
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { features } from "@/utils/platform";
 
-const links = [
+const baseLinks = [
   { to: "/", icon: <Dog size={22} />, label: "Home" },
   { to: "/camera", icon: <Camera size={22} />, label: "Dog Vision Camera" },
   { to: "/gallery", icon: <Folder size={22} />, label: "Gallery" },
   { to: "/learn", icon: <BookText size={22} />, label: "Educational" },
-  { to: "/premium", icon: <Crown size={22} />, label: "Premium" },
 ];
+
+const premiumLink = { to: "/premium", icon: <Crown size={22} />, label: "Premium" };
+
+// Only show Premium link on web version (not app store versions)
+const getLinks = () => features.showPremium ? [...baseLinks, premiumLink] : baseLinks;
 
 export const Navbar = () => {
   const location = useLocation();
@@ -24,7 +29,7 @@ export const Navbar = () => {
           My Doggles
         </div>
         <div className="flex flex-1 gap-4 items-center">
-          {links.map(link => (
+          {getLinks().map(link => (
             <Link
               key={link.to}
               to={link.to}
