@@ -44,7 +44,7 @@ const Index = () => {
             Your dog sees the world different to you, share their experience with My Doggles
           </h2>
           <div className="text-lg text-gray-800 max-w-2xl mx-auto mb-7">
-            All dogs have a different experience of color to humans, lacking red but did you know their visual field differs across breeds according to which of two configurations of retinal cells your dog has, an Area Centralis or Visual Streak. Select your dog's breed, activate the live camera filter, and see exactly how different dogs experience vision. Educational, fun, and science-backed!
+            All dogs' experience of color is different to humans, lacking red but did you know their visual field differs across breeds according to which of two configurations of retinal cells your dog has, an Area Centralis or Visual Streak. Select your dog's breed, activate the live camera filter, and see exactly how different dogs experience vision. Educational, fun, and science-backed!
           </div>
         </header>
         
