@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SyncQueueProvider } from "@/contexts/SyncQueueContext";
@@ -10,6 +10,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { AdBanner } from "@/components/AdBanner";
+import { features } from "@/utils/platform";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CameraSimulator from "./pages/CameraSimulator";
@@ -39,9 +40,19 @@ const App = () => (
                   <Route path="/camera" element={<CameraSimulator />} />
                   <Route path="/gallery" element={<Gallery />} />
                   <Route path="/learn" element={<LearnPage />} />
-                  <Route path="/premium" element={<Premium />} />
+                  {/* Premium routes only available on web version */}
+                  {features.showPremium ? (
+                    <>
+                      <Route path="/premium" element={<Premium />} />
+                      <Route path="/success" element={<Success />} />
+                    </>
+                  ) : (
+                    <>
+                      <Route path="/premium" element={<Navigate to="/" replace />} />
+                      <Route path="/success" element={<Navigate to="/" replace />} />
+                    </>
+                  )}
                   <Route path="/auth" element={<Auth />} />
-                  <Route path="/success" element={<Success />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
