@@ -17,10 +17,14 @@ const isInStandaloneMode = () => {
          (window.navigator as any).standalone === true;
 };
 
+const DISMISS_KEY = "myDoggles_installPromptDismissed";
+
 export const InstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(() => {
+    return localStorage.getItem(DISMISS_KEY) === "true";
+  });
   const [isIOSDevice, setIsIOSDevice] = useState(false);
   const isMobile = useIsMobile();
 
@@ -62,6 +66,7 @@ export const InstallPrompt = () => {
   };
 
   const handleDismiss = () => {
+    localStorage.setItem(DISMISS_KEY, "true");
     setDismissed(true);
     setShowPrompt(false);
   };
