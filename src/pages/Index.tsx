@@ -41,10 +41,10 @@ const Index = () => {
             🦴 My Doggles
           </h1>
           <h2 className="text-xl font-medium text-blue-700 mb-8">
-            Experience seeing the world as your dog does—through their eyes!
+            Your dog sees the world different to you, share their experience with My Doggles
           </h2>
           <div className="text-lg text-gray-800 max-w-2xl mx-auto mb-7">
-            Select your dog's breed; to simulate how color and visual fields look different to them according to breed specific retinal configuration (Area Centralis or Visual Streak), activate the live camera filter, and see exactly how different dogs process visual information. Educational, fun, and science-backed!
+            All dogs have a different experience of color to humans, lacking red but did you know their visual field differs across breeds according to which of two configurations of retinal cells your dog has, an Area Centralis or Visual Streak. Select your dog's breed, activate the live camera filter, and see exactly how different dogs experience vision. Educational, fun, and science-backed!
           </div>
         </header>
         
