@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SocialShareButtons } from "@/components/SocialShareButtons";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useAdMob } from "@/hooks/useAdMob";
+import { features } from "@/utils/platform";
 
 const VIDEO_W = 700;
 const VIDEO_H = 440;
@@ -70,6 +72,7 @@ const BREED_FIELD_DESC: Record<BreedType, string> = {
 };
 
 export default function CameraSimulator() {
+  const { showInterstitial } = useAdMob();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasDogRef = useRef<HTMLCanvasElement>(null);
   const canvasHumanRef = useRef<HTMLCanvasElement>(null);
@@ -84,12 +87,25 @@ export default function CameraSimulator() {
   const [viewMode, setViewMode] = useState<"split" | "dog" | "human">("split");
   const [showZoneOverlay, setShowZoneOverlay] = useState(true);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [breedChangeCount, setBreedChangeCount] = useState(0);
   const [lastSavedPhoto, setLastSavedPhoto] = useState<{
     imageUrl: string;
     breed: string;
     retinalMode: string;
     filters: string;
   } | null>(null);
+
+  // Handle breed changes with interstitial ads every 5 changes (native only)
+  const handleBreedChange = (newBreed: BreedType) => {
+    setBreed(newBreed);
+    if (features.showAds) {
+      const newCount = breedChangeCount + 1;
+      setBreedChangeCount(newCount);
+      if (newCount % 5 === 0) {
+        showInterstitial();
+      }
+    }
+  };
 
   useEffect(() => {
     getPhotoCount().then(setGalleryCount);
@@ -173,7 +189,7 @@ export default function CameraSimulator() {
         </p>
         <div className="flex flex-col md:flex-row gap-8 w-full justify-between">
           <div className="flex flex-col gap-4 flex-1">
-            <BreedSelector value={breed} onChange={setBreed} />
+            <BreedSelector value={breed} onChange={handleBreedChange} />
             <RetinalModeSelector value={retinalMode} onChange={setRetinalMode} />
             <p className="text-sm text-gray-600 italic">
               Each of these selections represents an aspect of vision that differs between breeds of dog.
@@ -205,6 +221,11 @@ export default function CameraSimulator() {
                     const count = await getPhotoCount();
                     setGalleryCount(count);
                     toast.success("Photo saved to gallery!");
+                    
+                    // Show interstitial ad after saving photo (native only)
+                    if (features.showAds) {
+                      showInterstitial();
+                    }
                   }
                 }}
                 disabled={!snapshotReady}
