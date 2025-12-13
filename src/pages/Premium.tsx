@@ -55,11 +55,6 @@ export default function Premium() {
       premium: "All advanced retinal modes",
     },
     {
-      name: "Support Priority",
-      free: "Community support",
-      premium: "Priority email support",
-    },
-    {
       name: "Breed-Specific Filters",
       free: "Limited breeds",
       premium: "All dog breeds",
