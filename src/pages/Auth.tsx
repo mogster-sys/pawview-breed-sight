@@ -87,9 +87,12 @@ export default function Auth() {
         canonical="/auth"
       />
       <div className="w-full max-w-md">
-        <a href="/" className="flex items-center justify-center gap-2 text-blue-700 font-black text-3xl mb-8 hover:opacity-80 transition-opacity">
+        <a href="/" className="flex items-center justify-center gap-2 text-blue-700 font-black text-3xl mb-4 hover:opacity-80 transition-opacity">
           <Dog size={40} className="text-yellow-400" />
           My Doggles
+        </a>
+        <a href="/" className="flex items-center justify-center gap-1 text-sm text-blue-600 hover:text-blue-800 mb-6 transition-colors">
+          ← Back to Home
         </a>
 
         <Tabs defaultValue="signin" className="w-full">
