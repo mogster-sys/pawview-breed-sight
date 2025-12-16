@@ -10,11 +10,11 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-100 via-yellow-50 to-yellow-100">
   <nav class="bg-white/80 backdrop-blur-sm shadow-sm border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="/" class="text-2xl font-bold text-blue-800">🐕 My Doggles</a>
+      <a href="/" data-sveltekit-reload class="text-2xl font-bold text-blue-800">🐕 My Doggles</a>
       <div class="flex gap-4">
-        <a href="/camera" class="text-blue-700 hover:text-blue-900">Camera</a>
-        <a href="/gallery" class="text-blue-700 hover:text-blue-900">Gallery</a>
-        <a href="/learn" class="text-blue-700 hover:text-blue-900">Learn</a>
+        <a href="/camera" data-sveltekit-reload class="text-blue-700 hover:text-blue-900">Camera</a>
+        <a href="/gallery" data-sveltekit-reload class="text-blue-700 hover:text-blue-900">Gallery</a>
+        <a href="/learn" data-sveltekit-reload class="text-blue-700 hover:text-blue-900">Learn</a>
       </div>
     </div>
   </nav>
@@ -33,21 +33,21 @@
     </header>
 
     <div class="flex flex-wrap gap-8 justify-center items-stretch mt-10 mb-24">
-      <a href="/camera" class="flex flex-col justify-between items-center border rounded-xl bg-white shadow-md hover:shadow-xl transition p-8 min-w-[260px] h-64 group">
+      <a href="/camera" data-sveltekit-reload class="flex flex-col justify-between items-center border rounded-xl bg-white shadow-md hover:shadow-xl transition p-8 min-w-[260px] h-64 group">
         <div class="mb-4"><Camera class="text-yellow-400" size={54} /></div>
         <div>
           <div class="font-semibold text-xl text-blue-900 group-hover:text-yellow-500">Live Dog Vision Camera</div>
           <div class="text-gray-500 mt-2">See through your dog's eyes in real time—choose retinal mode (AC/VS), split view comparison. Capture and save filtered 'dog view' photos!</div>
         </div>
       </a>
-      <a href="/gallery" class="flex flex-col justify-between items-center border rounded-xl bg-white shadow-md hover:shadow-xl transition p-8 min-w-[260px] h-64 group">
+      <a href="/gallery" data-sveltekit-reload class="flex flex-col justify-between items-center border rounded-xl bg-white shadow-md hover:shadow-xl transition p-8 min-w-[260px] h-64 group">
         <div class="mb-4"><Folder class="text-blue-400" size={50} /></div>
         <div>
           <div class="font-semibold text-xl text-blue-900 group-hover:text-yellow-500">Photo Gallery</div>
           <div class="text-gray-500 mt-2">View and compare your saved dog vision photos side-by-side. Analyze different breeds and retinal configurations.</div>
         </div>
       </a>
-      <a href="/learn" class="flex flex-col justify-between items-center border rounded-xl bg-white shadow-md hover:shadow-xl transition p-8 min-w-[260px] h-64 group">
+      <a href="/learn" data-sveltekit-reload class="flex flex-col justify-between items-center border rounded-xl bg-white shadow-md hover:shadow-xl transition p-8 min-w-[260px] h-64 group">
         <div class="mb-4"><BookText class="text-blue-500" size={50} /></div>
         <div>
           <div class="font-semibold text-xl text-blue-900 group-hover:text-yellow-500">Learn & Compare</div>

@@ -26,11 +26,11 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-100 via-yellow-50 to-yellow-100">
   <nav class="bg-white/80 backdrop-blur-sm shadow-sm border-b">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="/" class="text-2xl font-bold text-blue-800">🐕 My Doggles</a>
+      <a href="/" data-sveltekit-reload class="text-2xl font-bold text-blue-800">🐕 My Doggles</a>
       <div class="flex gap-4">
-        <a href="/camera" class="text-blue-700">Camera</a>
-        <a href="/gallery" class="text-blue-700">Gallery</a>
-        <a href="/learn" class="text-blue-700">Learn</a>
+        <a href="/camera" data-sveltekit-reload class="text-blue-700">Camera</a>
+        <a href="/gallery" data-sveltekit-reload class="text-blue-700">Gallery</a>
+        <a href="/learn" data-sveltekit-reload class="text-blue-700">Learn</a>
       </div>
     </div>
   </nav>
@@ -41,7 +41,7 @@
     {#if photos.length === 0}
       <div class="text-center py-20">
         <p class="text-gray-600 text-lg mb-4">No photos yet!</p>
-        <a href="/camera" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+        <a href="/camera" data-sveltekit-reload class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
           Take Your First Photo
         </a>
       </div>

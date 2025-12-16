@@ -1,4 +1,4 @@
-import { k as escape_html, m as set_ssr_context, p as ssr_context, q as push, t as pop, n as noop } from "./context.js";
+import { k as escape_html, p as set_ssr_context, l as ssr_context, q as push, t as pop, n as noop } from "./context.js";
 import { clsx as clsx$1 } from "clsx";
 const DERIVED = 1 << 1;
 const EFFECT = 1 << 2;
@@ -1005,10 +1005,6 @@ function attr_class(value, hash, directives) {
   var result = to_class(value, hash, directives);
   return result ? ` class="${escape_html(result, true)}"` : "";
 }
-function attr_style(value, directives) {
-  var result = to_style(value, directives);
-  return result ? ` style="${escape_html(result, true)}"` : "";
-}
 function slot(renderer, $$props, name, slot_props, fallback_fn) {
   var slot_fn = $$props.$$slots?.[name];
   if (slot_fn === true) {
@@ -1053,23 +1049,22 @@ export {
   COMMENT_NODE as C,
   DIRTY as D,
   ERROR_VALUE as E,
-  ensure_array_like as F,
-  element as G,
+  attr as F,
+  attr_class as G,
   HYDRATION_ERROR as H,
   INERT as I,
-  bind_props as J,
-  sanitize_props as K,
+  ensure_array_like as J,
+  stringify as K,
   LEGACY_PROPS as L,
   MAYBE_DIRTY as M,
-  spread_props as N,
-  head as O,
-  attr as P,
-  attr_class as Q,
+  rest_props as N,
+  attributes as O,
+  clsx as P,
+  element as Q,
   ROOT_EFFECT as R,
   STATE_SYMBOL as S,
-  attr_style as T,
+  bind_props as T,
   UNINITIALIZED as U,
-  stringify as V,
   WAS_MARKED as W,
   HYDRATION_END as a,
   HYDRATION_START as b,
@@ -1094,7 +1089,7 @@ export {
   is_passive_event as u,
   render as v,
   slot as w,
-  rest_props as x,
-  attributes as y,
-  clsx as z
+  spread_props as x,
+  sanitize_props as y,
+  head as z
 };

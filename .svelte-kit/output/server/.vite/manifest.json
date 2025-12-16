@@ -9,6 +9,14 @@
       "_environment.js"
     ]
   },
+  "_Icon.js": {
+    "file": "chunks/Icon.js",
+    "name": "Icon",
+    "imports": [
+      "_index2.js",
+      "_context.js"
+    ]
+  },
   "_context.js": {
     "file": "chunks/context.js",
     "name": "context"
@@ -118,7 +126,7 @@
       "_index2.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.BoEWD88Y.css"
+      "_app/immutable/assets/_layout.9tqrn6Yq.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -128,7 +136,7 @@
     "isEntry": true,
     "imports": [
       "_index2.js",
-      "_context.js"
+      "_Icon.js"
     ]
   },
   "src/routes/auth/+page.svelte": {
@@ -151,8 +159,9 @@
     "isEntry": true,
     "imports": [
       "_index2.js",
+      "_context.js",
       "_photoGallery.js",
-      "_context.js"
+      "_Icon.js"
     ]
   },
   "src/routes/gallery/+page.svelte": {

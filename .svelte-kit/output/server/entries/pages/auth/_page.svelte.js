@@ -1,4 +1,4 @@
-import { O as head, P as attr } from "../../../chunks/index2.js";
+import { z as head, F as attr } from "../../../chunks/index2.js";
 import "@sveltejs/kit/internal";
 import "../../../chunks/exports.js";
 import "../../../chunks/utils.js";
