@@ -127,31 +127,28 @@
 <div class="fixed inset-0 bg-black overflow-hidden">
   <!-- Fullscreen Camera Canvas -->
   <div class="absolute inset-0">
-    {#if viewMode === 'split'}
-      <div class="relative w-full h-full">
-        <canvas bind:this={canvasHumanRef} width={canvasWidth} height={canvasHeight}
-          class="absolute inset-0 w-full h-full object-cover" />
-        <div class="absolute top-0 right-0 w-1/2 h-full overflow-hidden">
-          <canvas bind:this={canvasDogRef} width={canvasWidth} height={canvasHeight}
-            class="absolute right-0 w-full h-full object-cover" style="transform: translateX(-50%);" />
-        </div>
+    <!-- Always render both canvases, show/hide with CSS -->
+    <div class="relative w-full h-full">
+      <!-- Human vision canvas -->
+      <canvas bind:this={canvasHumanRef} width={canvasWidth} height={canvasHeight}
+        class="absolute inset-0 w-full h-full object-cover {viewMode === 'dog' ? 'hidden' : ''}" />
+
+      <!-- Dog vision canvas -->
+      <canvas bind:this={canvasDogRef} width={canvasWidth} height={canvasHeight}
+        class="absolute inset-0 w-full h-full object-cover {viewMode === 'human' ? 'hidden' : ''} {viewMode === 'split' ? 'w-1/2 left-1/2' : ''}" />
+
+      {#if viewMode === 'split'}
         <!-- Split line indicator -->
-        <div class="absolute inset-y-0 left-1/2 w-0.5 bg-white/50"></div>
+        <div class="absolute inset-y-0 left-1/2 w-0.5 bg-white/50 z-10"></div>
         <!-- Labels -->
-        <div class="absolute top-4 left-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur">
+        <div class="absolute top-4 left-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur z-10">
           Normal
         </div>
-        <div class="absolute top-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur">
+        <div class="absolute top-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm font-semibold backdrop-blur z-10">
           Dog Vision
         </div>
-      </div>
-    {:else if viewMode === 'dog'}
-      <canvas bind:this={canvasDogRef} width={canvasWidth} height={canvasHeight}
-        class="w-full h-full object-cover" />
-    {:else}
-      <canvas bind:this={canvasHumanRef} width={canvasWidth} height={canvasHeight}
-        class="w-full h-full object-cover" />
-    {/if}
+      {/if}
+    </div>
   </div>
 
   <!-- Flash effect -->
@@ -188,22 +185,17 @@
       </button>
     </div>
 
-    <!-- Settings toggle (only in portrait) -->
-    {#if !isLandscape}
-      <button
-        on:click={() => drawerOpen = !drawerOpen}
-        class="bg-black/70 backdrop-blur text-white p-3 rounded-full"
-      >
-        {#if drawerOpen}
-          <X size={24} />
-        {:else}
-          <Settings size={24} />
-        {/if}
-      </button>
-    {:else}
-      <!-- Empty spacer in landscape to keep layout balanced -->
-      <div class="w-12"></div>
-    {/if}
+    <!-- Settings toggle (works in both portrait and landscape) -->
+    <button
+      on:click={() => drawerOpen = !drawerOpen}
+      class="bg-black/70 backdrop-blur text-white p-3 rounded-full"
+    >
+      {#if drawerOpen}
+        <X size={24} />
+      {:else}
+        <Settings size={24} />
+      {/if}
+    </button>
   </div>
 
   <!-- HUD Overlay - Bottom Controls -->
@@ -237,10 +229,18 @@
     </a>
   </div>
 
+  <!-- Backdrop for portrait drawer -->
+  {#if !isLandscape && drawerOpen}
+    <div
+      class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+      on:click={() => drawerOpen = false}
+    ></div>
+  {/if}
+
   <!-- Settings Panel - Portrait: Sliding drawer, Landscape: Right sidebar -->
   {#if isLandscape}
-    <!-- Landscape: Fixed right sidebar -->
-    <div class="absolute right-0 top-0 bottom-0 w-80 bg-gradient-to-l from-black via-black/95 to-transparent backdrop-blur-xl p-4 overflow-y-auto border-l border-white/10">
+    <!-- Landscape: Retractable right sidebar -->
+    <div class="absolute right-0 top-0 bottom-0 w-80 bg-gradient-to-l from-black via-black/95 to-transparent backdrop-blur-xl p-4 overflow-y-auto border-l border-white/10 transition-transform duration-300 {drawerOpen ? 'translate-x-0' : 'translate-x-full'}">
       <div class="space-y-4 pt-20 pb-24">
         <!-- Breed Selection -->
         <div>
@@ -314,7 +314,7 @@
     </div>
   {:else}
     <!-- Portrait: Sliding drawer from bottom -->
-    <div class="absolute bottom-0 left-0 right-0 transition-transform duration-300 {drawerOpen ? 'translate-y-0' : 'translate-y-full'}">
+    <div class="absolute bottom-0 left-0 right-0 transition-transform duration-300 {drawerOpen ? 'translate-y-0' : 'translate-y-full'} z-10">
       <div class="bg-gradient-to-t from-black via-black/95 to-transparent backdrop-blur-xl p-6 pb-32 rounded-t-3xl shadow-2xl border-t border-white/10">
         <div class="max-w-2xl mx-auto space-y-6">
           <!-- Breed Selection -->
