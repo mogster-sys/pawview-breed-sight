@@ -45,5 +45,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>My Doggles needs camera access to show you how your dog sees the world</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>My Doggles needs photo library access to save dog vision photos</string>
 </dict>
 </plist>

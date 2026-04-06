@@ -4,29 +4,31 @@
   import { savePhoto, getPhotoCount } from '$lib/utils/photoGallery';
   import type { RetinalMode, BreedType } from '$lib/types';
   import { getRetinalModeForBreed, breedConfigurations, getBreedsByRetinalMode } from '$lib/utils/breedConfig';
-  import { FlipHorizontal, Save, Settings, X } from 'lucide-svelte';
+  import { FlipHorizontal, Camera, Settings, X } from 'lucide-svelte';
 
-  let videoRef: HTMLVideoElement;
-  let canvasDogRef: HTMLCanvasElement;
-  let canvasHumanRef: HTMLCanvasElement;
-  let streaming = false;
-  let breed: BreedType = 'labrador';
-  let retinalMode: RetinalMode = 'visual-streak';
-  let filters = { dichro: true, contrast: false, brightness: false };
-  let galleryCount = 0;
-  let viewMode: 'split' | 'dog' | 'human' = 'dog';
-  let facingMode: 'user' | 'environment' = 'environment';
-  let stream: MediaStream | null = null;
-  let drawerOpen = false;
-  let isLandscape = false;
-
-  let canvasWidth = 0;
-  let canvasHeight = 0;
+  // Svelte 5 state runes
+  let videoRef: HTMLVideoElement | undefined = $state();
+  let canvasDogRef: HTMLCanvasElement | undefined = $state();
+  let canvasHumanRef: HTMLCanvasElement | undefined = $state();
+  let streaming = $state(false);
+  let breed: BreedType = $state('labrador');
+  let retinalMode: RetinalMode = $state('visual-streak');
+  let filters = $state({ dichro: true, contrast: false, brightness: false });
+  let galleryCount = $state(0);
+  let viewMode: 'split' | 'dog' | 'human' = $state('dog');
+  let facingMode: 'user' | 'environment' = $state('environment');
+  let stream: MediaStream | null = $state(null);
+  let drawerOpen = $state(false);
+  let isLandscape = $state(false);
+  let canvasWidth = $state(0);
+  let canvasHeight = $state(0);
 
   // Automatically update retinal mode when breed changes (core feature!)
-  $: if (breed !== 'custom') {
-    retinalMode = getRetinalModeForBreed(breed);
-  }
+  $effect(() => {
+    if (breed !== 'custom') {
+      retinalMode = getRetinalModeForBreed(breed);
+    }
+  });
 
   // Get breeds organized by retinal configuration
   const breedsByRetinal = getBreedsByRetinalMode();
@@ -106,16 +108,32 @@
   }
 
   async function handleSave() {
-    if (!canvasDogRef) return;
-    const imageData = canvasDogRef.toDataURL('image/png');
-    await savePhoto({ imageData, breed, retinalMode, filters });
-    galleryCount = await getPhotoCount();
+    if (!canvasDogRef) {
+      alert('Camera not ready yet. Please wait.');
+      return;
+    }
 
-    // Flash effect
-    const flash = document.getElementById('flash');
-    if (flash) {
-      flash.style.opacity = '1';
-      setTimeout(() => flash.style.opacity = '0', 150);
+    try {
+      const imageData = canvasDogRef.toDataURL('image/png');
+
+      if (!imageData || imageData === 'data:,') {
+        alert('Could not capture image from camera.');
+        return;
+      }
+
+      await savePhoto({ imageData, breed, retinalMode, filters });
+      galleryCount = await getPhotoCount();
+
+      // Flash effect
+      const flash = document.getElementById('flash');
+      if (flash) {
+        flash.style.opacity = '1';
+        setTimeout(() => flash.style.opacity = '0', 150);
+      }
+    } catch (err: unknown) {
+      console.error('Failed to save photo:', err);
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      alert(`Failed to save: ${message}`);
     }
   }
 </script>
@@ -131,11 +149,11 @@
     <div class="relative w-full h-full">
       <!-- Human vision canvas -->
       <canvas bind:this={canvasHumanRef} width={canvasWidth} height={canvasHeight}
-        class="absolute inset-0 w-full h-full object-cover {viewMode === 'dog' ? 'hidden' : ''}" />
+        class="absolute inset-0 w-full h-full object-cover {viewMode === 'dog' ? 'hidden' : ''}"></canvas>
 
       <!-- Dog vision canvas -->
       <canvas bind:this={canvasDogRef} width={canvasWidth} height={canvasHeight}
-        class="absolute inset-0 w-full h-full object-cover {viewMode === 'human' ? 'hidden' : ''} {viewMode === 'split' ? 'w-1/2 left-1/2' : ''}" />
+        class="absolute inset-0 w-full h-full object-cover {viewMode === 'human' ? 'hidden' : ''} {viewMode === 'split' ? 'w-1/2 left-1/2' : ''}"></canvas>
 
       {#if viewMode === 'split'}
         <!-- Split line indicator -->
@@ -157,7 +175,7 @@
   <!-- HUD Overlay - Top -->
   <div class="absolute top-0 left-0 right-0 p-4 flex items-center justify-between">
     <!-- Home button -->
-    <a href="/" data-sveltekit-reload class="bg-black/70 backdrop-blur text-white p-3 rounded-full">
+    <a href="/" data-sveltekit-reload class="bg-black/70 backdrop-blur text-white p-3 rounded-full" aria-label="Back to home">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
@@ -166,19 +184,19 @@
     <!-- View Mode Toggle -->
     <div class="flex gap-2 bg-black/70 backdrop-blur rounded-full p-1">
       <button
-        on:click={() => viewMode = 'dog'}
+        onclick={() => viewMode = 'dog'}
         class="px-4 py-2 rounded-full font-semibold text-sm transition {viewMode === 'dog' ? 'bg-white text-black' : 'text-white'}"
       >
         Dog
       </button>
       <button
-        on:click={() => viewMode = 'split'}
+        onclick={() => viewMode = 'split'}
         class="px-4 py-2 rounded-full font-semibold text-sm transition {viewMode === 'split' ? 'bg-white text-black' : 'text-white'}"
       >
         Split
       </button>
       <button
-        on:click={() => viewMode = 'human'}
+        onclick={() => viewMode = 'human'}
         class="px-4 py-2 rounded-full font-semibold text-sm transition {viewMode === 'human' ? 'bg-white text-black' : 'text-white'}"
       >
         Normal
@@ -187,8 +205,9 @@
 
     <!-- Settings toggle (works in both portrait and landscape) -->
     <button
-      on:click={() => drawerOpen = !drawerOpen}
+      onclick={() => drawerOpen = !drawerOpen}
       class="bg-black/70 backdrop-blur text-white p-3 rounded-full"
+      aria-label="Toggle settings"
     >
       {#if drawerOpen}
         <X size={24} />
@@ -202,18 +221,20 @@
   <div class="absolute bottom-8 left-0 right-0 flex justify-center gap-6 items-end px-4">
     <!-- Flip camera -->
     <button
-      on:click={toggleCamera}
+      onclick={toggleCamera}
       class="bg-white/90 backdrop-blur p-4 rounded-full shadow-2xl hover:bg-white transition"
+      aria-label="Flip camera"
     >
       <FlipHorizontal size={28} class="text-gray-800" />
     </button>
 
     <!-- Capture button -->
     <button
-      on:click={handleSave}
-      class="bg-blue-600 p-6 rounded-full shadow-2xl hover:bg-blue-700 transition ring-4 ring-white/30"
+      onclick={handleSave}
+      class="bg-red-600 p-6 rounded-full shadow-2xl hover:bg-red-700 transition ring-4 ring-white/30"
+      aria-label="Take photo"
     >
-      <Save size={32} class="text-white" />
+      <Camera size={32} class="text-white" />
     </button>
 
     <!-- Gallery counter -->
@@ -231,10 +252,11 @@
 
   <!-- Backdrop for portrait drawer -->
   {#if !isLandscape && drawerOpen}
-    <div
-      class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
-      on:click={() => drawerOpen = false}
-    ></div>
+    <button
+      class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity border-0"
+      onclick={() => drawerOpen = false}
+      aria-label="Close settings"
+    ></button>
   {/if}
 
   <!-- Settings Panel - Portrait: Sliding drawer, Landscape: Right sidebar -->
@@ -244,8 +266,8 @@
       <div class="space-y-4 pt-20 pb-24">
         <!-- Breed Selection -->
         <div>
-          <label class="block text-white font-semibold mb-2 text-sm">Dog Breed</label>
-          <select bind:value={breed} class="w-full p-3 bg-white/10 text-white text-sm border-2 border-white/20 rounded-xl focus:border-white/40 focus:outline-none backdrop-blur">
+          <label for="breed-landscape" class="block text-white font-semibold mb-2 text-sm">Dog Breed</label>
+          <select id="breed-landscape" bind:value={breed} class="w-full p-3 bg-white/10 text-white text-sm border-2 border-white/20 rounded-xl focus:border-white/40 focus:outline-none backdrop-blur">
             <optgroup label="Visual Streak (Wide Scanning)">
               {#each breedsByRetinal['visual-streak'] as breedKey}
                 <option value={breedKey}>{breedConfigurations[breedKey].name}</option>
@@ -266,8 +288,8 @@
         <!-- Retinal Mode (only for custom) -->
         {#if breed === 'custom'}
           <div>
-            <label class="block text-white font-semibold mb-2 text-sm">Retinal Configuration</label>
-            <select bind:value={retinalMode} class="w-full p-3 bg-white/10 text-white text-sm border-2 border-white/20 rounded-xl focus:border-white/40 focus:outline-none backdrop-blur">
+            <label for="retinal-landscape" class="block text-white font-semibold mb-2 text-sm">Retinal Configuration</label>
+            <select id="retinal-landscape" bind:value={retinalMode} class="w-full p-3 bg-white/10 text-white text-sm border-2 border-white/20 rounded-xl focus:border-white/40 focus:outline-none backdrop-blur">
               <option value="visual-streak">Visual Streak (Wide Peripheral)</option>
               <option value="area-centralis">Area Centralis (Central Focus)</option>
             </select>
@@ -285,7 +307,7 @@
 
         <!-- Vision Filters -->
         <div>
-          <label class="block text-white font-semibold mb-2 text-sm">Vision Filters</label>
+          <span class="block text-white font-semibold mb-2 text-sm">Vision Filters</span>
           <div class="space-y-2">
             <label class="flex items-center gap-2 cursor-pointer bg-white/5 p-3 rounded-xl hover:bg-white/10 transition">
               <input type="checkbox" bind:checked={filters.dichro} class="w-5 h-5 rounded border-white/20" />
@@ -319,8 +341,8 @@
         <div class="max-w-2xl mx-auto space-y-6">
           <!-- Breed Selection -->
           <div>
-            <label class="block text-white font-semibold mb-3 text-lg">Dog Breed</label>
-            <select bind:value={breed} class="w-full p-4 bg-white/10 text-white border-2 border-white/20 rounded-xl focus:border-white/40 focus:outline-none backdrop-blur">
+            <label for="breed-portrait" class="block text-white font-semibold mb-3 text-lg">Dog Breed</label>
+            <select id="breed-portrait" bind:value={breed} class="w-full p-4 bg-white/10 text-white border-2 border-white/20 rounded-xl focus:border-white/40 focus:outline-none backdrop-blur">
               <optgroup label="Visual Streak (Wide Horizon Scanning)">
                 {#each breedsByRetinal['visual-streak'] as breedKey}
                   <option value={breedKey}>{breedConfigurations[breedKey].name}</option>
@@ -341,8 +363,8 @@
           <!-- Retinal Mode (only for custom) -->
           {#if breed === 'custom'}
             <div>
-              <label class="block text-white font-semibold mb-3 text-lg">Retinal Configuration</label>
-              <select bind:value={retinalMode} class="w-full p-4 bg-white/10 text-white border-2 border-white/20 rounded-xl focus:border-white/40 focus:outline-none backdrop-blur">
+              <label for="retinal-portrait" class="block text-white font-semibold mb-3 text-lg">Retinal Configuration</label>
+              <select id="retinal-portrait" bind:value={retinalMode} class="w-full p-4 bg-white/10 text-white border-2 border-white/20 rounded-xl focus:border-white/40 focus:outline-none backdrop-blur">
                 <option value="visual-streak">Visual Streak (Wide Peripheral)</option>
                 <option value="area-centralis">Area Centralis (Central Focus)</option>
               </select>
@@ -360,7 +382,7 @@
 
           <!-- Vision Filters -->
           <div>
-            <label class="block text-white font-semibold mb-3 text-lg">Vision Filters</label>
+            <span class="block text-white font-semibold mb-3 text-lg">Vision Filters</span>
             <div class="space-y-3">
               <label class="flex items-center gap-3 cursor-pointer bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
                 <input type="checkbox" bind:checked={filters.dichro} class="w-6 h-6 rounded border-white/20" />

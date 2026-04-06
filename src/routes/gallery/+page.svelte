@@ -27,7 +27,7 @@
   <nav class="bg-white/80 backdrop-blur-sm shadow-sm border-b">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="/" data-sveltekit-reload class="bg-blue-100 hover:bg-blue-200 text-blue-800 p-2 rounded-full transition">
+        <a href="/" data-sveltekit-reload class="bg-blue-100 hover:bg-blue-200 text-blue-800 p-2 rounded-full transition" aria-label="Back to home">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>

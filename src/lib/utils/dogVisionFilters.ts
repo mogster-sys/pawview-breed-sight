@@ -1,18 +1,37 @@
 import type { RetinalMode, Filters } from "$lib/types";
 
+// Reusable offscreen canvas to avoid memory churn (created once, reused every frame)
+let offscreenCanvas: HTMLCanvasElement | null = null;
+let offscreenCtx: CanvasRenderingContext2D | null = null;
+
+function getOffscreenCanvas(w: number, h: number): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } | null {
+  if (!offscreenCanvas) {
+    offscreenCanvas = document.createElement('canvas');
+    offscreenCtx = offscreenCanvas.getContext('2d');
+  }
+
+  if (!offscreenCtx) return null;
+
+  // Only resize if dimensions changed
+  if (offscreenCanvas.width !== w || offscreenCanvas.height !== h) {
+    offscreenCanvas.width = w;
+    offscreenCanvas.height = h;
+  }
+
+  return { canvas: offscreenCanvas, ctx: offscreenCtx };
+}
+
 // Apply radial blur for Area Centralis mode (central focus)
 function applyAreaCentralisBlur(
   ctx: CanvasRenderingContext2D,
   w: number,
   h: number
 ) {
+  const offscreen = getOffscreenCanvas(w, h);
+  if (!offscreen) return;
+
+  const { canvas: tempCanvas, ctx: tempCtx } = offscreen;
   const imageData = ctx.getImageData(0, 0, w, h);
-  const tempCanvas = document.createElement('canvas');
-  tempCanvas.width = w;
-  tempCanvas.height = h;
-  const tempCtx = tempCanvas.getContext('2d');
-  if (!tempCtx) return;
-  
   tempCtx.putImageData(imageData, 0, 0);
   
   const centerX = w / 2;
@@ -50,13 +69,11 @@ function applyVisualStreakBlur(
   w: number,
   h: number
 ) {
+  const offscreen = getOffscreenCanvas(w, h);
+  if (!offscreen) return;
+
+  const { canvas: tempCanvas, ctx: tempCtx } = offscreen;
   const imageData = ctx.getImageData(0, 0, w, h);
-  const tempCanvas = document.createElement('canvas');
-  tempCanvas.width = w;
-  tempCanvas.height = h;
-  const tempCtx = tempCanvas.getContext('2d');
-  if (!tempCtx) return;
-  
   tempCtx.putImageData(imageData, 0, 0);
   
   const centerY = h / 2;

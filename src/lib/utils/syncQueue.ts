@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "$lib/stores/supabase";
 
 export interface QueuedOperation {
   id: string;

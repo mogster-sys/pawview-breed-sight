@@ -80,37 +80,63 @@ async function loadMetadata(): Promise<SavedPhoto[]> {
 }
 
 export async function savePhoto(photo: Omit<SavedPhoto, "id" | "timestamp" | "fileName">): Promise<SavedPhoto> {
+  // Validate imageData exists
+  if (!photo.imageData) {
+    throw new Error('No image data provided');
+  }
+
   await ensurePhotoDirectory();
-  
+
   const fileName = `photo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.png`;
   const newPhoto: SavedPhoto = {
     ...photo,
     id: fileName,
     timestamp: Date.now(),
     fileName,
-    imageData: photo.imageData, // Temporarily keep in memory
+    imageData: photo.imageData,
   };
 
   if (isNative) {
     // Save image to device filesystem
-    const base64Data = photo.imageData.split(",")[1]; // Remove data:image/png;base64, prefix
-    
-    await Filesystem.writeFile({
-      path: `${PHOTO_DIR}/${fileName}`,
-      data: base64Data,
-      directory: Directory.Documents,
-    });
+    // Handle both "data:image/png;base64,..." format and raw base64
+    let base64Data = photo.imageData;
+    if (base64Data.includes(',')) {
+      base64Data = base64Data.split(",")[1];
+    }
+
+    if (!base64Data) {
+      throw new Error('Invalid image data format');
+    }
+
+    try {
+      await Filesystem.writeFile({
+        path: `${PHOTO_DIR}/${fileName}`,
+        data: base64Data,
+        directory: Directory.Documents,
+      });
+    } catch (fsError) {
+      console.error('Filesystem write error:', fsError);
+      throw new Error(`Failed to write file: ${fsError}`);
+    }
+  } else {
+    // Web fallback - store in localStorage
+    try {
+      localStorage.setItem(`pawvision_photo_${fileName}`, photo.imageData);
+    } catch (storageError) {
+      console.error('LocalStorage error:', storageError);
+      throw new Error(`Failed to store photo: ${storageError}`);
+    }
   }
 
   // Update metadata
   const photos = await loadMetadata();
   photos.unshift(newPhoto);
-  
+
   // Keep only metadata in local storage if not native
   if (!isNative && photos.length > MAX_TEMP_PHOTOS) {
     photos.splice(MAX_TEMP_PHOTOS);
   }
-  
+
   await saveMetadata(photos);
   return newPhoto;
 }
