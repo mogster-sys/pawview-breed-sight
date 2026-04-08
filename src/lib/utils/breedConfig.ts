@@ -84,6 +84,16 @@ export const breedConfigurations: Record<BreedType, BreedConfig> = {
     retinalMode: 'visual-streak',
     description: 'Low profile hunting vision'
   },
+  'blue-heeler': {
+    name: 'Blue Heeler (Australian Cattle Dog)',
+    retinalMode: 'visual-streak',
+    description: 'Alert working vision for herding cattle'
+  },
+  'bull-arab': {
+    name: 'Bull Arab',
+    retinalMode: 'visual-streak',
+    description: 'Hunting breed with wide scanning for open terrain'
+  },
 
   // Area Centralis breeds - optimized for central focus and close-up tasks
   'pug': {

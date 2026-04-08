@@ -27,6 +27,8 @@ export type BreedType =
   | 'afghan-hound'
   | 'shih-tzu'
   | 'cavalier'
+  | 'blue-heeler'
+  | 'bull-arab'
   | 'custom';
 
 export interface Filters {
