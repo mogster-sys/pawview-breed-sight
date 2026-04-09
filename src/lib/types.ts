@@ -35,4 +35,5 @@ export interface Filters {
   dichro: boolean;
   contrast: boolean;
   brightness: boolean;
+  uv: boolean;
 }

@@ -160,6 +160,39 @@ export const breedConfigurations: Record<BreedType, BreedConfig> = {
   }
 };
 
+// Breed images mapping
+export const breedImages: Record<BreedType, string> = {
+  'labrador': '/breeds/labrador.jpg',
+  'greyhound': '/breeds/greyhound.jpg',
+  'golden-retriever': '/breeds/golden-retriever.jpg',
+  'german-shepherd': '/breeds/german-shepherd.jpg',
+  'collie': '/breeds/collie.jpg',
+  'doberman': '/breeds/doberman.jpg',
+  'german-pointer': '/breeds/german-pointer.jpg',
+  'siberian-husky': '/breeds/siberian-husky.jpg',
+  'australian-shepherd': '/breeds/australian-shepherd.jpg',
+  'rottweiler': '/breeds/rottweiler.jpg',
+  'great-dane': '/breeds/great-dane.jpg',
+  'borzoi': '/breeds/borzoi.jpg',
+  'saluki': '/breeds/saluki.jpg',
+  'afghan-hound': '/breeds/afghan-hound.jpg',
+  'dachshund': '/breeds/dachshund.jpg',
+  'blue-heeler': '/breeds/blue-heeler.jpg',
+  'bull-arab': '/breeds/bull-arab.jpg',
+  'pug': '/breeds/pug.jpg',
+  'beagle': '/breeds/beagle.jpg',
+  'bulldog': '/breeds/bulldog.jpg',
+  'french-bulldog': '/breeds/french-bulldog.jpg',
+  'boxer': '/breeds/boxer.jpg',
+  'poodle': '/breeds/poodle.jpg',
+  'corgi': '/breeds/corgi.jpg',
+  'miniature-schnauzer': '/breeds/miniature-schnauzer.jpg',
+  'yorkshire-terrier': '/breeds/yorkshire-terrier.jpg',
+  'shih-tzu': '/breeds/shih-tzu.jpg',
+  'cavalier': '/breeds/cavalier.jpg',
+  'custom': '',
+};
+
 // Get retinal mode for a specific breed
 export function getRetinalModeForBreed(breed: BreedType): RetinalMode {
   return breedConfigurations[breed].retinalMode;

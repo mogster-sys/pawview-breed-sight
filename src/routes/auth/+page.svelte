@@ -6,7 +6,6 @@
   let mode: 'login' | 'signup' = 'login';
 
   async function handleSubmit() {
-    // Placeholder for Supabase auth
     console.log('Auth:', { email, password, mode });
     goto('/');
   }
@@ -16,48 +15,37 @@
   <title>Sign In - My Doggles</title>
 </svelte:head>
 
-<div class="min-h-screen bg-gradient-to-br from-blue-100 via-yellow-50 to-yellow-100 flex items-center justify-center">
-  <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
-    <h1 class="text-3xl font-bold text-blue-800 mb-6 text-center">
+<div class="min-h-screen bg-surface flex items-center justify-center px-4">
+  <div class="bg-surface-low p-10 max-w-md w-full">
+    <p class="font-label text-xs font-semibold uppercase tracking-widest text-tertiary mb-3">Account</p>
+    <h1 class="font-display text-3xl font-bold text-ink mb-8">
       {mode === 'login' ? 'Sign In' : 'Sign Up'}
     </h1>
 
-    <form on:submit|preventDefault={handleSubmit} class="space-y-4">
+    <form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-5">
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input
-          type="email"
-          id="email"
-          bind:value={email}
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
+        <label for="email" class="block font-label text-xs uppercase tracking-widest text-ink-muted mb-2">Email</label>
+        <input type="email" id="email" bind:value={email}
+          class="w-full px-0 py-3 bg-transparent border-0 border-b-2 border-outline text-ink font-body focus:outline-none focus:border-primary"
+          required />
       </div>
 
       <div>
-        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-        <input
-          type="password"
-          id="password"
-          bind:value={password}
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
+        <label for="password" class="block font-label text-xs uppercase tracking-widest text-ink-muted mb-2">Password</label>
+        <input type="password" id="password" bind:value={password}
+          class="w-full px-0 py-3 bg-transparent border-0 border-b-2 border-outline text-ink font-body focus:outline-none focus:border-primary"
+          required />
       </div>
 
-      <button
-        type="submit"
-        class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-      >
+      <button type="submit"
+        class="w-full bg-gradient-to-br from-primary to-primary-container text-primary-on font-label text-sm font-semibold uppercase tracking-wide py-4 hover:from-primary-dim transition">
         {mode === 'login' ? 'Sign In' : 'Sign Up'}
       </button>
     </form>
 
-    <div class="mt-4 text-center">
-      <button
-        on:click={() => mode = mode === 'login' ? 'signup' : 'login'}
-        class="text-blue-600 hover:underline text-sm"
-      >
+    <div class="mt-6 text-center">
+      <button onclick={() => mode = mode === 'login' ? 'signup' : 'login'}
+        class="font-label text-sm text-tertiary hover:text-primary transition">
         {mode === 'login' ? 'Need an account? Sign up' : 'Already have an account? Sign in'}
       </button>
     </div>

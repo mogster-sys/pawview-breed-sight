@@ -1,5 +1,5 @@
 import type { BreedType, RetinalMode, Filters } from "$lib/types";
-import { Filesystem, Directory } from "@capacitor/filesystem";
+import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
 import { Capacitor } from "@capacitor/core";
 
 export interface SavedPhoto {
@@ -28,7 +28,7 @@ async function ensurePhotoDirectory() {
   try {
     await Filesystem.mkdir({
       path: PHOTO_DIR,
-      directory: Directory.Documents,
+      directory: Directory.Data,
       recursive: true,
     });
   } catch (e) {
@@ -51,7 +51,8 @@ async function saveMetadata(photos: SavedPhoto[]): Promise<void> {
     await Filesystem.writeFile({
       path: METADATA_FILE,
       data: JSON.stringify(metadata),
-      directory: Directory.Documents,
+      directory: Directory.Data,
+      encoding: Encoding.UTF8,
     });
   } else {
     localStorage.setItem("pawvision_metadata", JSON.stringify(metadata));
@@ -66,7 +67,8 @@ async function loadMetadata(): Promise<SavedPhoto[]> {
     if (isNative) {
       const result = await Filesystem.readFile({
         path: METADATA_FILE,
-        directory: Directory.Documents,
+        directory: Directory.Data,
+        encoding: Encoding.UTF8,
       });
       metadataStr = result.data as string;
     } else {
@@ -87,7 +89,9 @@ export async function savePhoto(photo: Omit<SavedPhoto, "id" | "timestamp" | "fi
 
   await ensurePhotoDirectory();
 
-  const fileName = `photo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.png`;
+  const isJpeg = photo.imageData.includes('image/jpeg');
+  const ext = isJpeg ? '.jpg' : '.png';
+  const fileName = `photo_${Date.now()}_${Math.random().toString(36).substring(2, 11)}${ext}`;
   const newPhoto: SavedPhoto = {
     ...photo,
     id: fileName,
@@ -97,22 +101,27 @@ export async function savePhoto(photo: Omit<SavedPhoto, "id" | "timestamp" | "fi
   };
 
   if (isNative) {
-    // Save image to device filesystem
-    // Handle both "data:image/png;base64,..." format and raw base64
+    // Strip data URL prefix to get raw base64
     let base64Data = photo.imageData;
-    if (base64Data.includes(',')) {
-      base64Data = base64Data.split(",")[1];
+    const commaIdx = base64Data.indexOf(',');
+    if (commaIdx >= 0) {
+      base64Data = base64Data.substring(commaIdx + 1);
     }
 
-    if (!base64Data) {
-      throw new Error('Invalid image data format');
+    // Clean any whitespace from base64
+    base64Data = base64Data.replace(/\s/g, '');
+
+    if (!base64Data || base64Data.length < 50) {
+      throw new Error('Invalid image data');
     }
+
+    const savePath = `${PHOTO_DIR}/${fileName}`;
 
     try {
       await Filesystem.writeFile({
-        path: `${PHOTO_DIR}/${fileName}`,
+        path: savePath,
         data: base64Data,
-        directory: Directory.Documents,
+        directory: Directory.Data,
       });
     } catch (fsError) {
       console.error('Filesystem write error:', fsError);
@@ -155,11 +164,12 @@ export async function getGalleryPhotos(page: number = 0, pageSize: number = 20):
           try {
             const result = await Filesystem.readFile({
               path: `${PHOTO_DIR}/${meta.fileName}`,
-              directory: Directory.Documents,
+              directory: Directory.Data,
             });
+            const mime = meta.fileName.endsWith('.jpg') ? 'image/jpeg' : 'image/png';
             return {
               ...meta,
-              imageData: `data:image/png;base64,${result.data}`,
+              imageData: `data:${mime};base64,${result.data}`,
             };
           } catch (e) {
             console.error(`Failed to load photo ${meta.fileName}:`, e);
@@ -173,7 +183,7 @@ export async function getGalleryPhotos(page: number = 0, pageSize: number = 20):
       })
     );
 
-    return photosWithData.filter((p): p is SavedPhoto => p !== null);
+    return photosWithData.filter((p): p is (SavedPhoto & { imageData: string }) => p !== null);
   } catch (e) {
     console.error("Error reading gallery:", e);
     return [];
@@ -188,7 +198,7 @@ export async function deletePhoto(id: string): Promise<void> {
     try {
       await Filesystem.deleteFile({
         path: `${PHOTO_DIR}/${photo.fileName}`,
-        directory: Directory.Documents,
+        directory: Directory.Data,
       });
     } catch (e) {
       console.error("Error deleting photo file:", e);
@@ -210,7 +220,7 @@ export async function clearGallery(): Promise<void> {
       metadata.map(photo => 
         Filesystem.deleteFile({
           path: `${PHOTO_DIR}/${photo.fileName}`,
-          directory: Directory.Documents,
+          directory: Directory.Data,
         }).catch(e => console.error("Error deleting file:", e))
       )
     );
