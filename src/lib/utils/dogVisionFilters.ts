@@ -47,7 +47,7 @@ let processCtx: CanvasRenderingContext2D | null = null;
 function getOffscreenCanvas(w: number, h: number): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } | null {
   if (!offscreenCanvas) {
     offscreenCanvas = document.createElement('canvas');
-    offscreenCtx = offscreenCanvas.getContext('2d');
+    offscreenCtx = offscreenCanvas.getContext('2d', { willReadFrequently: true });
   }
   if (!offscreenCtx) return null;
   if (offscreenCanvas.width !== w || offscreenCanvas.height !== h) {
@@ -60,7 +60,7 @@ function getOffscreenCanvas(w: number, h: number): { canvas: HTMLCanvasElement; 
 function getProcessCanvas(w: number, h: number): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } | null {
   if (!processCanvas) {
     processCanvas = document.createElement('canvas');
-    processCtx = processCanvas.getContext('2d');
+    processCtx = processCanvas.getContext('2d', { willReadFrequently: true });
   }
   if (!processCtx) return null;
   if (processCanvas.width !== w || processCanvas.height !== h) {

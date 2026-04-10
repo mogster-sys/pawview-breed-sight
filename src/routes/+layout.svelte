@@ -2,6 +2,9 @@
   import '../app.css';
   import { onMount } from 'svelte';
   import { ChevronRight } from 'lucide-svelte';
+  import type { Snippet } from 'svelte';
+
+  let { children }: { children: Snippet } = $props();
 
   let showSplash = $state(false);
   let splashFading = $state(false);
@@ -32,4 +35,4 @@
   </button>
 {/if}
 
-<slot />
+{@render children()}

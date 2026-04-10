@@ -24,9 +24,8 @@
 
     try {
       if (Capacitor.isNativePlatform()) {
-        // Write to a temp file for sharing
         const ext = photo.fileName.endsWith('.jpg') ? '.jpg' : '.png';
-        const tempName = `share_temp${ext}`;
+        const tempName = `share_${Date.now()}${ext}`;
         let base64 = photo.imageData;
         const commaIdx = base64.indexOf(',');
         if (commaIdx >= 0) base64 = base64.substring(commaIdx + 1);
@@ -37,11 +36,20 @@
           directory: Directory.Cache,
         });
 
-        await Share.share({
-          title: `Dog Vision - ${photo.breed}`,
-          text: `See how a ${photo.breed} sees the world! Captured with My Doggles.`,
-          url: written.uri,
-        });
+        try {
+          await Share.share({
+            title: `Dog Vision - ${photo.breed}`,
+            text: `See how a ${photo.breed} sees the world! Captured with My Doggles.`,
+            url: written.uri,
+          });
+        } catch (_) {
+          // User cancelled share — that's fine
+        }
+
+        // Clean up temp file
+        try {
+          await Filesystem.deleteFile({ path: tempName, directory: Directory.Cache });
+        } catch (_) { /* ignore cleanup errors */ }
       } else {
         // Web fallback - download
         const link = document.createElement('a');

@@ -9,12 +9,14 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 export const user = writable(null);
 export const session = writable(null);
 
-supabase.auth.getSession().then(({ data: { session: s } }) => {
-  session.set(s);
-  user.set(s?.user ?? null);
-});
+if (typeof window !== 'undefined') {
+  supabase.auth.getSession().then(({ data: { session: s } }) => {
+    session.set(s);
+    user.set(s?.user ?? null);
+  }).catch(() => { /* Supabase not configured */ });
 
-supabase.auth.onAuthStateChange((_event, s) => {
-  session.set(s);
-  user.set(s?.user ?? null);
-});
+  supabase.auth.onAuthStateChange((_event, s) => {
+    session.set(s);
+    user.set(s?.user ?? null);
+  });
+}
