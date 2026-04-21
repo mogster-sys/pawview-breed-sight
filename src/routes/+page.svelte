@@ -1,97 +1,146 @@
 <script lang="ts">
-  import { Folder, BookText } from 'lucide-svelte';
+  import { Menu, Settings, ArrowRight, Compass } from 'lucide-svelte';
   import { breedConfigurations, getBreedsByRetinalMode, breedImages } from '$lib/utils/breedConfig';
 
   const breedsByRetinal = getBreedsByRetinalMode();
 </script>
 
 <svelte:head>
-  <title>My Doggles - See Through Your Dog's Eyes</title>
-  <meta name="description" content="Experience the world as your dog does. Simulate dog vision with breed-specific filters, retinal configurations, and live camera effects." />
+  <title>My Doggles - The Modern Broadsheet for the Curious Canine</title>
+  <meta name="description" content="The modern broadsheet for the curious canine and their technical companion. Experience canine vision, breed by breed." />
 </svelte:head>
 
-<div class="min-h-screen bg-surface">
-  <!-- Nav -->
-  <nav class="bg-surface/80 backdrop-blur-[20px] sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" data-sveltekit-reload class="font-display text-2xl font-bold tracking-tight text-ink">MYDOGGLES</a>
-      <div class="flex gap-6">
-        <a href="/camera" data-sveltekit-reload class="font-label text-sm font-medium uppercase tracking-wide text-ink-muted hover:text-primary transition">Camera</a>
-        <a href="/gallery" data-sveltekit-reload class="font-label text-sm font-medium uppercase tracking-wide text-ink-muted hover:text-primary transition">Gallery</a>
-        <a href="/learn" data-sveltekit-reload class="font-label text-sm font-medium uppercase tracking-wide text-ink-muted hover:text-primary transition">Your Dog</a>
-      </div>
+<div class="min-h-screen bg-surface pb-24">
+  <!-- Top App Bar -->
+  <nav class="bg-surface sticky top-0 z-30">
+    <div class="px-5 py-4 flex items-center justify-between border-b-[1.5px] border-tertiary-container/40">
+      <button class="p-1 -ml-1 text-ink" aria-label="Menu">
+        <Menu size={22} strokeWidth={1.75} />
+      </button>
+      <h1 class="font-display text-base font-bold tracking-[0.05em] text-ink">MYDOGGLES</h1>
+      <a href="/camera" class="p-1 -mr-1 text-ink" aria-label="Settings">
+        <Settings size={20} strokeWidth={1.75} />
+      </a>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <div class="max-w-6xl mx-auto px-6 pt-12 pb-8">
-    <p class="font-label text-xs font-semibold uppercase tracking-widest text-tertiary mb-4">Precision Canine Vision</p>
-    <h1 class="font-display text-4xl md:text-6xl font-bold tracking-tight text-ink leading-[0.95] mb-6">
-      Select your breed
-    </h1>
-    <p class="font-body text-lg text-ink-muted leading-relaxed max-w-2xl italic">
-      Tap your dog's breed to open the camera and see the world through their eyes. Each breed has a unique retinal configuration that shapes how they perceive their surroundings.
+  <!-- Editorial Banner -->
+  <div class="px-5 pt-6">
+    <div class="bg-tertiary-container text-tertiary-on inline-block px-3 py-1.5 mb-6">
+      <p class="font-label text-[10px] font-bold uppercase tracking-[0.2em]">Chronograph Edition &middot; Vol. I</p>
+    </div>
+
+    <h2 class="font-display text-[3.25rem] font-bold tracking-tight text-ink leading-[0.85] mb-1">
+      MY<br/>DOGGLES
+    </h2>
+
+    <div class="w-12 h-0.5 bg-tertiary my-5"></div>
+
+    <p class="font-body text-base text-ink-muted leading-relaxed italic max-w-md mb-7">
+      The modern broadsheet for the curious canine and their technical companion. Vision research from the field.
     </p>
-  </div>
 
-  <!-- Breed Picker -->
-  <div class="max-w-6xl mx-auto px-6 pb-8">
-    <p class="font-label text-xs font-semibold uppercase tracking-widest text-tertiary mb-4">Visual Streak &mdash; Wide Horizon Scanning</p>
-    <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-1.5 mb-8">
-      {#each breedsByRetinal['visual-streak'] as breedKey}
-        <a href="/camera?breed={breedKey}" data-sveltekit-reload
-          class="relative group overflow-hidden aspect-square">
-          <img src={breedImages[breedKey]} alt={breedConfigurations[breedKey].name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-          <div class="absolute inset-0 bg-ink/40 group-hover:bg-ink/20 transition flex flex-col items-start justify-end p-2">
-            <span class="font-label text-[10px] md:text-xs text-surface font-medium leading-tight">{breedConfigurations[breedKey].name}</span>
-            <span class="font-label text-[8px] text-surface/60 uppercase tracking-wide">VS</span>
-          </div>
-        </a>
-      {/each}
-    </div>
-
-    <p class="font-label text-xs font-semibold uppercase tracking-widest text-tertiary mb-4">Area Centralis &mdash; Central Focus</p>
-    <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-1.5 mb-8">
-      {#each breedsByRetinal['area-centralis'] as breedKey}
-        <a href="/camera?breed={breedKey}" data-sveltekit-reload
-          class="relative group overflow-hidden aspect-square">
-          <img src={breedImages[breedKey]} alt={breedConfigurations[breedKey].name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-          <div class="absolute inset-0 bg-ink/40 group-hover:bg-ink/20 transition flex flex-col items-start justify-end p-2">
-            <span class="font-label text-[10px] md:text-xs text-surface font-medium leading-tight">{breedConfigurations[breedKey].name}</span>
-            <span class="font-label text-[8px] text-surface/60 uppercase tracking-wide">AC</span>
-          </div>
-        </a>
-      {/each}
+    <div class="flex flex-wrap gap-1">
+      <a href="/camera" class="bg-primary text-primary-on font-label text-[11px] font-bold uppercase tracking-[0.18em] px-6 py-3.5 inline-flex items-center gap-2 hover:bg-primary-dim transition">
+        Begin Hunt <ArrowRight size={14} strokeWidth={2.5} />
+      </a>
+      <a href="/learn" class="bg-surface-high text-ink font-label text-[11px] font-bold uppercase tracking-[0.18em] px-6 py-3.5 inline-flex items-center gap-2 hover:bg-surface-highest transition">
+        View Logs
+      </a>
     </div>
   </div>
 
-  <!-- Secondary Nav -->
-  <div class="max-w-6xl mx-auto px-6 pb-16">
-    <div class="grid md:grid-cols-2 gap-0">
-      <a href="/gallery" data-sveltekit-reload class="group bg-surface-low hover:bg-surface-mid transition-colors p-8 flex flex-col gap-3">
-        <div class="w-10 h-10 bg-secondary flex items-center justify-center">
-          <Folder size={18} class="text-secondary-on" />
-        </div>
-        <h3 class="font-display text-lg font-semibold text-ink group-hover:text-primary transition">Photo Gallery</h3>
-        <p class="font-body text-ink-muted text-sm">Browse your saved dog vision captures.</p>
-        <span class="font-label text-xs uppercase tracking-widest text-tertiary mt-auto">View &rarr;</span>
-      </a>
-      <a href="/learn" data-sveltekit-reload class="group bg-surface-mid hover:bg-surface-high transition-colors p-8 flex flex-col gap-3">
-        <div class="w-10 h-10 bg-primary flex items-center justify-center">
-          <BookText size={18} class="text-primary-on" />
-        </div>
-        <h3 class="font-display text-lg font-semibold text-ink group-hover:text-primary transition">Your Dog</h3>
-        <p class="font-body text-ink-muted text-sm">The science of canine vision.</p>
-        <span class="font-label text-xs uppercase tracking-widest text-tertiary mt-auto">Read &rarr;</span>
-      </a>
+  <!-- Featured Article (vintage poster style) -->
+  <div class="mt-10 mx-5 bg-surface-low overflow-hidden">
+    <div class="aspect-[4/3] bg-ink relative overflow-hidden">
+      <img src="/splash.png" alt="Field expedition" class="w-full h-full object-cover opacity-90 mix-blend-multiply" style="filter: sepia(0.4) contrast(1.05) brightness(0.95);" />
+      <div class="absolute top-3 left-3 bg-surface text-tertiary px-2 py-1 font-label text-[9px] font-bold uppercase tracking-[0.18em]">Featured</div>
+    </div>
+    <div class="p-5">
+      <p class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary mb-2">The Daily Chronicle</p>
+      <h3 class="font-display text-xl font-bold text-ink leading-tight mb-2">
+        Latest Intelligence From The Field
+      </h3>
+      <p class="font-body text-sm text-ink-muted italic leading-relaxed">
+        Calibrate your senses. Twenty-nine breeds, two retinal configurations, one unprecedented look through your dog's eyes.
+      </p>
+    </div>
+  </div>
+
+  <!-- Squad Sections -->
+  <div class="px-5 mt-12">
+    <div class="flex items-baseline justify-between mb-1">
+      <h2 class="font-display text-2xl font-bold text-ink">The Squad</h2>
+      <span class="font-label text-[10px] font-bold uppercase tracking-[0.18em] text-tertiary">{breedsByRetinal['visual-streak'].length + breedsByRetinal['area-centralis'].length} Operatives</span>
+    </div>
+    <p class="font-body text-sm text-ink-muted italic mb-5">Select your operative to commence vision protocol.</p>
+
+    <!-- Visual Streak -->
+    <div class="mb-8">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="bg-tertiary-container text-tertiary-on px-2 py-0.5 font-label text-[9px] font-bold uppercase tracking-[0.18em]">VS</div>
+        <p class="font-label text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">Visual Streak &middot; Wide Horizon Scanning</p>
+      </div>
+      <div class="grid grid-cols-3 gap-1">
+        {#each breedsByRetinal['visual-streak'] as breedKey}
+          <a href="/camera?breed={breedKey}" class="relative group overflow-hidden aspect-square">
+            <img src={breedImages[breedKey]} alt={breedConfigurations[breedKey].name}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              style="filter: sepia(0.25) contrast(1.05);" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent flex flex-col justify-end p-2">
+              <span class="font-label text-[10px] font-bold text-surface uppercase tracking-wide leading-tight">{breedConfigurations[breedKey].name}</span>
+            </div>
+          </a>
+        {/each}
+      </div>
+    </div>
+
+    <!-- Area Centralis -->
+    <div class="mb-8">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="bg-secondary text-secondary-on px-2 py-0.5 font-label text-[9px] font-bold uppercase tracking-[0.18em]">AC</div>
+        <p class="font-label text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">Area Centralis &middot; Central Focus</p>
+      </div>
+      <div class="grid grid-cols-3 gap-1">
+        {#each breedsByRetinal['area-centralis'] as breedKey}
+          <a href="/camera?breed={breedKey}" class="relative group overflow-hidden aspect-square">
+            <img src={breedImages[breedKey]} alt={breedConfigurations[breedKey].name}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              style="filter: sepia(0.25) contrast(1.05);" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent flex flex-col justify-end p-2">
+              <span class="font-label text-[10px] font-bold text-surface uppercase tracking-wide leading-tight">{breedConfigurations[breedKey].name}</span>
+            </div>
+          </a>
+        {/each}
+      </div>
+    </div>
+  </div>
+
+  <!-- Field Logistics Card -->
+  <div class="mx-5 bg-primary text-primary-on p-6">
+    <div class="flex items-center gap-2 mb-4 pb-4 border-b border-primary-on/20">
+      <Compass size={16} strokeWidth={1.75} />
+      <p class="font-label text-[10px] font-bold uppercase tracking-[0.2em]">Field Logistics</p>
+    </div>
+    <div class="space-y-3">
+      <div class="flex items-baseline justify-between">
+        <span class="font-label text-[11px] uppercase tracking-[0.15em] opacity-80">Acuity</span>
+        <span class="font-display text-sm font-bold">20/75 Calibrated</span>
+      </div>
+      <div class="flex items-baseline justify-between">
+        <span class="font-label text-[11px] uppercase tracking-[0.15em] opacity-80">Spectrum</span>
+        <span class="font-display text-sm font-bold">Dichromatic</span>
+      </div>
+      <div class="flex items-baseline justify-between">
+        <span class="font-label text-[11px] uppercase tracking-[0.15em] opacity-80">Field Status</span>
+        <span class="font-display text-sm font-bold">Ready</span>
+      </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="bg-surface-low px-6 py-8">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="font-label text-xs text-ink-faint uppercase tracking-widest">My Doggles &mdash; Educational Canine Vision</p>
-      <p class="font-label text-xs text-ink-faint">Science-backed &bull; 29 Breeds &bull; Two Retinal Modes</p>
-    </div>
+  <footer class="mt-12 px-5 py-6 text-center">
+    <p class="font-label text-[10px] text-ink-faint uppercase tracking-[0.2em]">Est. 2026 &middot; Precision Canine Vision</p>
+    <p class="font-label text-[9px] text-ink-faint uppercase tracking-[0.18em] mt-1 opacity-60">Available on all standard digital broadsheets</p>
   </footer>
 </div>
