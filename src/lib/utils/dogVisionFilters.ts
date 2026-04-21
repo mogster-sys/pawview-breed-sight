@@ -70,33 +70,44 @@ function getProcessCanvas(w: number, h: number): { canvas: HTMLCanvasElement; ct
   return { canvas: processCanvas, ctx: processCtx };
 }
 
-// --- Retinal blur patterns ---
+// --- Retinal blur patterns (soft gradient transitions, anatomically accurate) ---
 
 function applyAreaCentralisBlur(ctx: CanvasRenderingContext2D, w: number, h: number) {
   const offscreen = getOffscreenCanvas(w, h);
   if (!offscreen) return;
 
   const { canvas: tempCanvas, ctx: tempCtx } = offscreen;
-  const imageData = ctx.getImageData(0, 0, w, h);
-  tempCtx.putImageData(imageData, 0, 0);
 
-  const centerX = w / 2;
-  const centerY = h / 2;
-  const maxRadius = Math.sqrt(centerX * centerX + centerY * centerY);
+  // Capture sharp version
+  tempCtx.globalCompositeOperation = 'source-over';
+  tempCtx.clearRect(0, 0, w, h);
+  tempCtx.drawImage(ctx.canvas, 0, 0);
 
-  // Blurred full image
-  ctx.filter = 'blur(8px)';
+  // Blur the entire main canvas
+  ctx.filter = 'blur(7px)';
   ctx.drawImage(tempCanvas, 0, 0);
   ctx.filter = 'none';
 
-  // Sharp central area
-  ctx.save();
-  ctx.globalCompositeOperation = 'source-over';
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, maxRadius * 0.25, 0, Math.PI * 2);
-  ctx.clip();
+  // Build a radial gradient alpha mask — sharp at fovea, smooth falloff
+  // Acuity falls off steeply outside ~5° from fovea in real dogs
+  const cx = w / 2;
+  const cy = h / 2;
+  const minDim = Math.min(w, h);
+  const grad = tempCtx.createRadialGradient(cx, cy, minDim * 0.04, cx, cy, minDim * 0.45);
+  grad.addColorStop(0, 'rgba(0,0,0,1)');     // full sharp at fovea
+  grad.addColorStop(0.25, 'rgba(0,0,0,0.85)');
+  grad.addColorStop(0.55, 'rgba(0,0,0,0.4)');
+  grad.addColorStop(0.85, 'rgba(0,0,0,0.1)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');     // fully blurred at periphery
+
+  // Mask the sharp version with the gradient
+  tempCtx.globalCompositeOperation = 'destination-in';
+  tempCtx.fillStyle = grad;
+  tempCtx.fillRect(0, 0, w, h);
+  tempCtx.globalCompositeOperation = 'source-over';
+
+  // Composite masked sharp over blurred
   ctx.drawImage(tempCanvas, 0, 0);
-  ctx.restore();
 }
 
 function applyVisualStreakBlur(ctx: CanvasRenderingContext2D, w: number, h: number) {
@@ -104,23 +115,35 @@ function applyVisualStreakBlur(ctx: CanvasRenderingContext2D, w: number, h: numb
   if (!offscreen) return;
 
   const { canvas: tempCanvas, ctx: tempCtx } = offscreen;
-  const imageData = ctx.getImageData(0, 0, w, h);
-  tempCtx.putImageData(imageData, 0, 0);
 
-  const centerY = h / 2;
-  const streakHeight = h * 0.4;
+  // Capture sharp version
+  tempCtx.globalCompositeOperation = 'source-over';
+  tempCtx.clearRect(0, 0, w, h);
+  tempCtx.drawImage(ctx.canvas, 0, 0);
 
-  ctx.filter = 'blur(6px)';
+  // Blur the entire main canvas
+  ctx.filter = 'blur(5px)';
   ctx.drawImage(tempCanvas, 0, 0);
   ctx.filter = 'none';
 
-  ctx.save();
-  ctx.globalCompositeOperation = 'source-over';
-  ctx.beginPath();
-  ctx.rect(0, centerY - streakHeight / 2, w, streakHeight);
-  ctx.clip();
+  // Build a vertical linear gradient — sharp band along horizon, fading above/below
+  const grad = tempCtx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, 'rgba(0,0,0,0)');     // top: blurred
+  grad.addColorStop(0.3, 'rgba(0,0,0,0.15)');
+  grad.addColorStop(0.42, 'rgba(0,0,0,0.65)');
+  grad.addColorStop(0.5, 'rgba(0,0,0,1)');   // horizon: full sharp
+  grad.addColorStop(0.58, 'rgba(0,0,0,0.65)');
+  grad.addColorStop(0.7, 'rgba(0,0,0,0.15)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');     // bottom: blurred
+
+  // Mask the sharp version with the gradient
+  tempCtx.globalCompositeOperation = 'destination-in';
+  tempCtx.fillStyle = grad;
+  tempCtx.fillRect(0, 0, w, h);
+  tempCtx.globalCompositeOperation = 'source-over';
+
+  // Composite masked sharp over blurred
   ctx.drawImage(tempCanvas, 0, 0);
-  ctx.restore();
 }
 
 // --- Acuity blur (20/75 vision) ---
