@@ -15,6 +15,18 @@
     if (!hasLaunched) {
       showSplash = true;
     }
+
+    // Handle Android hardware back button — go back in app history,
+    // only exit app if at root with no history
+    import('@capacitor/app').then(({ App }) => {
+      App.addListener('backButton', ({ canGoBack }) => {
+        if (canGoBack && window.location.pathname !== '/') {
+          window.history.back();
+        } else {
+          App.exitApp();
+        }
+      });
+    }).catch(() => { /* not running on native */ });
   });
 
   function dismissSplash() {
@@ -44,22 +56,22 @@
 {#if !hideBottomNav}
   <nav class="fixed bottom-0 left-0 right-0 z-40 bg-primary text-primary-on shadow-[0_-2px_20px_rgba(32,27,12,0.15)]">
     <div class="grid grid-cols-4">
-      <a href="/learn" data-sveltekit-reload
+      <a href="/learn"
         class="flex flex-col items-center gap-1.5 py-3 transition {$page.url.pathname === '/learn' ? 'bg-tertiary-container text-tertiary-on' : 'hover:bg-primary-dim'}">
         <BookOpen size={18} strokeWidth={1.75} />
         <span class="font-label text-[10px] font-bold uppercase tracking-[0.15em]">Chronicle</span>
       </a>
-      <a href="/camera" data-sveltekit-reload
+      <a href="/camera"
         class="flex flex-col items-center gap-1.5 py-3 transition hover:bg-primary-dim">
         <Compass size={18} strokeWidth={1.75} />
         <span class="font-label text-[10px] font-bold uppercase tracking-[0.15em]">Hunt</span>
       </a>
-      <a href="/" data-sveltekit-reload
+      <a href="/"
         class="flex flex-col items-center gap-1.5 py-3 transition {$page.url.pathname === '/' ? 'bg-tertiary-container text-tertiary-on' : 'hover:bg-primary-dim'}">
         <PawPrint size={18} strokeWidth={1.75} />
         <span class="font-label text-[10px] font-bold uppercase tracking-[0.15em]">Squad</span>
       </a>
-      <a href="/gallery" data-sveltekit-reload
+      <a href="/gallery"
         class="flex flex-col items-center gap-1.5 py-3 transition {$page.url.pathname === '/gallery' ? 'bg-tertiary-container text-tertiary-on' : 'hover:bg-primary-dim'}">
         <Images size={18} strokeWidth={1.75} />
         <span class="font-label text-[10px] font-bold uppercase tracking-[0.15em]">Logs</span>

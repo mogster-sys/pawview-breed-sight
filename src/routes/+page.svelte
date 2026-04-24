@@ -52,8 +52,8 @@
 
   <!-- Featured Article (vintage poster style) -->
   <div class="mt-10 mx-5 bg-surface-low overflow-hidden">
-    <div class="aspect-[4/3] bg-ink relative overflow-hidden">
-      <img src="/splash.png" alt="Field expedition" class="w-full h-full object-cover opacity-90 mix-blend-multiply" style="filter: sepia(0.4) contrast(1.05) brightness(0.95);" />
+    <div class="aspect-[4/3] bg-surface-mid relative overflow-hidden">
+      <img src="/splash.png" alt="Field expedition" class="w-full h-full object-contain" style="filter: sepia(0.2) contrast(1.05);" />
       <div class="absolute top-3 left-3 bg-surface text-tertiary px-2 py-1 font-label text-[9px] font-bold uppercase tracking-[0.18em]">Featured</div>
     </div>
     <div class="p-5">

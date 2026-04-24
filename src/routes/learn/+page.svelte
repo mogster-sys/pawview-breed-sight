@@ -10,7 +10,7 @@
   <!-- Top App Bar -->
   <nav class="bg-surface sticky top-0 z-30">
     <div class="px-5 py-4 flex items-center justify-between border-b-[1.5px] border-tertiary-container/40">
-      <a href="/" data-sveltekit-reload class="p-1 -ml-1 text-ink" aria-label="Menu">
+      <a href="/" class="p-1 -ml-1 text-ink" aria-label="Menu">
         <Menu size={22} strokeWidth={1.75} />
       </a>
       <h1 class="font-display text-base font-bold tracking-[0.05em] text-ink">MYDOGGLES</h1>
